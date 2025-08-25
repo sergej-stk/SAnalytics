@@ -1,0 +1,60 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        platform: [x64, x86, ARM64]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Setup NuGet
+      uses: nuget/setup-nuget@v2
+
+    - name: Restore dependencies
+      run: dotnet restore SAnalytics.Desktop/SAnalytics.Desktop.sln
+
+    - name: Build Release
+      run: dotnet build SAnalytics.Desktop/SAnalytics.Desktop.sln --configuration Release --no-restore
+
+    - name: Publish ${{ matrix.platform }}
+      run: dotnet publish SAnalytics.Desktop/SAnalytics.Desktop.csproj --configuration Release --runtime win-${{ matrix.platform }} --self-contained true --output ./publish/${{ matrix.platform }}
+
+    - name: Create MSIX Package ${{ matrix.platform }}
+      run: |
+        msbuild SAnalytics.Desktop/SAnalytics.Desktop.csproj /p:Configuration=Release /p:Platform=${{ matrix.platform }} /p:UapAppxPackageBuildMode=StoreUpload /p:AppxBundle=Always /p:GenerateAppxPackageOnBuild=true
+
+    - name: Upload Release Assets
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./SAnalytics.Desktop/AppPackages/SAnalytics.Desktop_*_Test/SAnalytics.Desktop_*_${{ matrix.platform }}.msix
+        asset_name: SAnalytics.Desktop-${{ matrix.platform }}.msix
+        asset_content_type: application/octet-stream
+      continue-on-error: true
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: SAnalytics-${{ matrix.platform }}
+        path: |
+          ./publish/${{ matrix.platform }}/
+          ./SAnalytics.Desktop/AppPackages/

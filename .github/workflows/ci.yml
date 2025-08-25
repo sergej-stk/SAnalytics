@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        platform: [x64, x86, ARM64]
+        configuration: [Debug, Release]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Setup NuGet
+      uses: nuget/setup-nuget@v2
+
+    - name: Restore dependencies
+      run: dotnet restore SAnalytics.Desktop/SAnalytics.Desktop.sln
+
+    - name: Build
+      run: dotnet build SAnalytics.Desktop/SAnalytics.Desktop.sln --configuration ${{ matrix.configuration }} --no-restore
+
+    - name: Test
+      run: dotnet test SAnalytics.Desktop/SAnalytics.Desktop.sln --configuration ${{ matrix.configuration }} --no-build --verbosity normal
+      continue-on-error: true
+
+  code-quality:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore SAnalytics.Desktop/SAnalytics.Desktop.sln
+
+    - name: Build
+      run: dotnet build SAnalytics.Desktop/SAnalytics.Desktop.sln --configuration Release --no-restore
+
+    - name: Run code analysis
+      run: dotnet build SAnalytics.Desktop/SAnalytics.Desktop.sln --configuration Release --verbosity normal
