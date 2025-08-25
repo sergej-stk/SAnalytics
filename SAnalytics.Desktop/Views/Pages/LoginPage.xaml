@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="SAnalytics.Desktop.Views.Pages.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <Storyboard x:Name="LoginAnimation">
+            <DoubleAnimation Storyboard.TargetName="LoginCard"
+                           Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)"
+                           From="1" To="0.95" Duration="0:0:0.3" AutoReverse="True"/>
+            <DoubleAnimation Storyboard.TargetName="LoginCard"
+                           Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)"
+                           From="1" To="0.95" Duration="0:0:0.3" AutoReverse="True"/>
+        </Storyboard>
+        
+        <Storyboard x:Name="ErrorShakeAnimation">
+            <DoubleAnimation Storyboard.TargetName="LoginCard"
+                           Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateX)"
+                           From="0" To="10" Duration="0:0:0.1" AutoReverse="True" RepeatBehavior="3x"/>
+        </Storyboard>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#FF1B1B2F" Offset="0"/>
+                <GradientStop Color="#FF162447" Offset="0.5"/>
+                <GradientStop Color="#FF1F4788" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        
+        <!-- Animated background particles -->
+        <Canvas>
+            <Ellipse Width="100" Height="100" Fill="#20FFFFFF" Canvas.Left="100" Canvas.Top="200">
+                <Ellipse.RenderTransform>
+                    <CompositeTransform/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse Width="60" Height="60" Fill="#15FFFFFF" Canvas.Left="800" Canvas.Top="300">
+                <Ellipse.RenderTransform>
+                    <CompositeTransform/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse Width="80" Height="80" Fill="#10FFFFFF" Canvas.Left="300" Canvas.Top="500">
+                <Ellipse.RenderTransform>
+                    <CompositeTransform/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+        </Canvas>
+
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="400" Margin="40">
+            <Border x:Name="LoginCard" 
+                    Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+                    CornerRadius="16"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    Padding="40">
+                <Border.Shadow>
+                    <ThemeShadow />
+                </Border.Shadow>
+                <Border.RenderTransform>
+                    <CompositeTransform />
+                </Border.RenderTransform>
+                
+                <StackPanel Spacing="24">
+                    <!-- Logo/Icon -->
+                    <Viewbox Width="80" Height="80" Margin="0,0,0,16">
+                        <FontIcon Glyph="&#xE9CE;" 
+                                  FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"/>
+                    </Viewbox>
+                    
+                    <!-- Title -->
+                    <TextBlock Text="SAnalytics" 
+                               FontSize="32" 
+                               FontWeight="Light"
+                               HorizontalAlignment="Center"
+                               Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+                    
+                    <TextBlock Text="Willkommen zurück" 
+                               FontSize="16" 
+                               HorizontalAlignment="Center"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                               Margin="0,-16,0,8"/>
+
+                    <!-- Username -->
+                    <TextBox x:Name="UsernameBox"
+                             Text="{x:Bind ViewModel.Username, Mode=TwoWay}"
+                             PlaceholderText="Benutzername"
+                             Style="{StaticResource DefaultTextBoxStyle}">
+                        <TextBox.Template>
+                            <ControlTemplate TargetType="TextBox">
+                                <Border Background="{ThemeResource TextControlBackgroundFocused}"
+                                        BorderBrush="{ThemeResource AccentControlElevationBorderBrush}"
+                                        BorderThickness="2"
+                                        CornerRadius="8">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <FontIcon Grid.Column="0" 
+                                                  Glyph="&#xE77B;" 
+                                                  Margin="12,0,8,0" 
+                                                  Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                        <ScrollViewer x:Name="ContentElement" Grid.Column="1"
+                                                      Margin="0,8,12,8"/>
+                                    </Grid>
+                                </Border>
+                            </ControlTemplate>
+                        </TextBox.Template>
+                    </TextBox>
+
+                    <!-- Password -->
+                    <PasswordBox x:Name="PasswordBox"
+                                 Password="{x:Bind ViewModel.Password, Mode=TwoWay}"
+                                 PlaceholderText="Passwort">
+                        <PasswordBox.Template>
+                            <ControlTemplate TargetType="PasswordBox">
+                                <Border Background="{ThemeResource TextControlBackgroundFocused}"
+                                        BorderBrush="{ThemeResource AccentControlElevationBorderBrush}"
+                                        BorderThickness="2"
+                                        CornerRadius="8">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <FontIcon Grid.Column="0" 
+                                                  Glyph="&#xE72E;" 
+                                                  Margin="12,0,8,0" 
+                                                  Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                        <ScrollViewer x:Name="ContentElement" Grid.Column="1"
+                                                      Margin="0,8,0,8"/>
+                                        <Button x:Name="RevealButton" Grid.Column="2"
+                                                Margin="0,0,4,0"
+                                                Background="Transparent"
+                                                BorderThickness="0">
+                                            <FontIcon Glyph="&#xED1A;" FontSize="16"/>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </ControlTemplate>
+                        </PasswordBox.Template>
+                    </PasswordBox>
+
+                    <!-- Remember Me -->
+                    <CheckBox Content="Angemeldet bleiben" 
+                              IsChecked="{x:Bind ViewModel.RememberMe, Mode=TwoWay}"
+                              Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+
+                    <!-- Error Message -->
+                    <TextBlock Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+                               Foreground="{ThemeResource SystemFillColorCriticalBrush}"
+                               Visibility="{x:Bind ViewModel.ErrorMessage, Mode=OneWay, Converter={StaticResource EmptyStringToVisibilityConverter}}"
+                               HorizontalAlignment="Center"
+                               TextWrapping="Wrap"/>
+
+                    <!-- Login Button -->
+                    <Button Content="Anmelden"
+                            Command="{x:Bind ViewModel.LoginCommand}"
+                            HorizontalAlignment="Stretch"
+                            Style="{StaticResource AccentButtonStyle}"
+                            Height="48"
+                            FontSize="16"
+                            CornerRadius="8">
+                        <Button.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Color="{ThemeResource AccentFillColorDefaultBrush}" Offset="0"/>
+                                <GradientStop Color="#FF4A9EFF" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+
+                    <!-- Loading Ring -->
+                    <ProgressRing IsActive="{x:Bind ViewModel.IsBusy, Mode=OneWay}"
+                                  Width="40" Height="40"
+                                  HorizontalAlignment="Center"
+                                  Visibility="{x:Bind ViewModel.IsBusy, Mode=OneWay}"/>
+
+                    <!-- Forgot Password -->
+                    <HyperlinkButton Content="Passwort vergessen?"
+                                     Command="{x:Bind ViewModel.ForgotPasswordCommand}"
+                                     HorizontalAlignment="Center"
+                                     Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"/>
+
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

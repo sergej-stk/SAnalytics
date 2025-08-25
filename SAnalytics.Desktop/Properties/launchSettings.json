@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SAnalytics.Desktop (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "SAnalytics.Desktop (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
