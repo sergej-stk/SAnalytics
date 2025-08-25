@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:SAnalytics.Desktop.Views.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -33,6 +34,11 @@
                 <GradientStop Color="#FF1F4788" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
+        
+        <!-- Language Selector in top right corner -->
+        <controls:LanguageSelector HorizontalAlignment="Right" 
+                                   VerticalAlignment="Top"
+                                   Margin="20"/>
         
         <!-- Animated background particles -->
         <Canvas>
@@ -82,7 +88,7 @@
                                HorizontalAlignment="Center"
                                Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
                     
-                    <TextBlock Text="Willkommen zurück" 
+                    <TextBlock Text="{x:Bind ViewModel.Title, Mode=OneWay}" 
                                FontSize="16" 
                                HorizontalAlignment="Center"
                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
@@ -91,7 +97,7 @@
                     <!-- Username -->
                     <TextBox x:Name="UsernameBox"
                              Text="{x:Bind ViewModel.Username, Mode=TwoWay}"
-                             PlaceholderText="Benutzername"
+                             PlaceholderText="{x:Bind ViewModel.UsernameLabel, Mode=OneWay}"
                              Style="{StaticResource DefaultTextBoxStyle}">
                         <TextBox.Template>
                             <ControlTemplate TargetType="TextBox">
@@ -119,7 +125,7 @@
                     <!-- Password -->
                     <PasswordBox x:Name="PasswordBox"
                                  Password="{x:Bind ViewModel.Password, Mode=TwoWay}"
-                                 PlaceholderText="Passwort">
+                                 PlaceholderText="{x:Bind ViewModel.PasswordLabel, Mode=OneWay}">
                         <PasswordBox.Template>
                             <ControlTemplate TargetType="PasswordBox">
                                 <Border Background="{ThemeResource TextControlBackgroundFocused}"
@@ -151,7 +157,7 @@
                     </PasswordBox>
 
                     <!-- Remember Me -->
-                    <CheckBox Content="Angemeldet bleiben" 
+                    <CheckBox Content="{x:Bind ViewModel.RememberMeLabel, Mode=OneWay}" 
                               IsChecked="{x:Bind ViewModel.RememberMe, Mode=TwoWay}"
                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
 
@@ -163,7 +169,7 @@
                                TextWrapping="Wrap"/>
 
                     <!-- Login Button -->
-                    <Button Content="Anmelden"
+                    <Button Content="{x:Bind ViewModel.LoginButtonText, Mode=OneWay}"
                             Command="{x:Bind ViewModel.LoginCommand}"
                             HorizontalAlignment="Stretch"
                             Style="{StaticResource AccentButtonStyle}"
@@ -185,7 +191,7 @@
                                   Visibility="{x:Bind ViewModel.IsBusy, Mode=OneWay}"/>
 
                     <!-- Forgot Password -->
-                    <HyperlinkButton Content="Passwort vergessen?"
+                    <HyperlinkButton Content="{x:Bind ViewModel.ForgotPasswordText, Mode=OneWay}"
                                      Command="{x:Bind ViewModel.ForgotPasswordCommand}"
                                      HorizontalAlignment="Center"
                                      Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"/>

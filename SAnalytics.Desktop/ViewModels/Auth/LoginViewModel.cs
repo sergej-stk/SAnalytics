@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SAnalytics.Desktop.Core.ViewModels;
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace SAnalytics.Desktop.ViewModels.Auth;
@@ -23,9 +24,39 @@ public partial class LoginViewModel : BaseViewModel
     [ObservableProperty]
     private bool _isLoginAnimating;
 
+    [ObservableProperty]
+    private string _usernameLabel = string.Empty;
+
+    [ObservableProperty]
+    private string _passwordLabel = string.Empty;
+
+    [ObservableProperty]
+    private string _rememberMeLabel = string.Empty;
+
+    [ObservableProperty]
+    private string _loginButtonText = string.Empty;
+
+    [ObservableProperty]
+    private string _forgotPasswordText = string.Empty;
+
     public LoginViewModel()
     {
-        Title = "SAnalytics Login";
+        UpdateLocalizedStrings();
+    }
+
+    protected override void OnLanguageChanged(object? sender, CultureInfo culture)
+    {
+        UpdateLocalizedStrings();
+    }
+
+    private void UpdateLocalizedStrings()
+    {
+        Title = GetLocalizedString("LoginTitle");
+        UsernameLabel = GetLocalizedString("Username");
+        PasswordLabel = GetLocalizedString("Password");
+        RememberMeLabel = GetLocalizedString("RememberMe");
+        LoginButtonText = GetLocalizedString("Login");
+        ForgotPasswordText = GetLocalizedString("ForgotPassword");
     }
     
     [RelayCommand]
@@ -33,7 +64,7 @@ public partial class LoginViewModel : BaseViewModel
     {
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
         {
-            ErrorMessage = "Benutzername und Passwort sind erforderlich";
+            ErrorMessage = GetLocalizedString("LoginError_FieldsRequired");
             return;
         }
 
@@ -51,7 +82,7 @@ public partial class LoginViewModel : BaseViewModel
             }
             else
             {
-                ErrorMessage = "Ungültige Anmeldedaten";
+                ErrorMessage = GetLocalizedString("LoginError_InvalidCredentials");
             }
         }
         finally
