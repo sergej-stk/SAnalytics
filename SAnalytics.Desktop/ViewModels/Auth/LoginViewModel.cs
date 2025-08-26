@@ -95,17 +95,15 @@ public partial class LoginViewModel : BaseViewModel
     [RelayCommand]
     private async Task ShowDebugDialogAsync()
     {
-#if DEBUG
         var dialog = new ContentDialog
         {
             Title = DebugDialogTitle,
             Content = DebugDialogContent,
             PrimaryButtonText = DebugDialogYes,
             SecondaryButtonText = DebugDialogCancel,
-            DefaultButton = ContentDialogButton.Primary
+            DefaultButton = ContentDialogButton.Primary,
+            XamlRoot = ((App)Application.Current).MainWindow?.Content?.XamlRoot
         };
-
-        dialog.XamlRoot = ((App)Application.Current).MainWindow?.Content?.XamlRoot;
 
         var result = await dialog.ShowAsync();
         
@@ -118,7 +116,6 @@ public partial class LoginViewModel : BaseViewModel
             // Auto-Login ausführen
             await LoginAsync();
         }
-#endif
     }
     
     [RelayCommand]
@@ -135,7 +132,9 @@ public partial class LoginViewModel : BaseViewModel
         ErrorMessage = string.Empty;
         
         try
-        {           
+        {
+            await Task.CompletedTask;
+
             if (Username == "admin" && Password == "admin")
             {
                 var mainWindow = ((App)Application.Current).MainWindow;
