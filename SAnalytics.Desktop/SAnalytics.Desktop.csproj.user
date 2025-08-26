@@ -9,6 +9,13 @@
     <AppIconSource>C:\Users\Sergej Steinsiek\Downloads\logo.png</AppIconSource>
     <SplashScreenSource>C:\Users\Sergej Steinsiek\Downloads\logo.png</SplashScreenSource>
     <PackageLogoSource>C:\Users\Sergej Steinsiek\Downloads\logo.png</PackageLogoSource>
+    <ActiveDebugProfile>SAnalytics.Desktop (Package)</ActiveDebugProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
   <ItemGroup>
     <None Update="App.xaml">

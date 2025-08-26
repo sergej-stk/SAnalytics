@@ -135,9 +135,7 @@ public partial class LoginViewModel : BaseViewModel
         ErrorMessage = string.Empty;
         
         try
-        {
-            await Task.Delay(2000);
-            
+        {           
             if (Username == "admin" && Password == "admin")
             {
                 var mainWindow = ((App)Application.Current).MainWindow;
