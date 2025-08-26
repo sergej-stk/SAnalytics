@@ -15,8 +15,10 @@ namespace SAnalytics.Desktop
     /// </summary>
     public partial class App : Application
     {
-        private Window? _window;
+        private MainWindow? _window;
         private static IHost? _host;
+
+        public MainWindow? MainWindow => _window;
 
         public App()
         {
@@ -41,7 +43,7 @@ namespace SAnalytics.Desktop
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
-            _window = new LoginWindow();
+            _window = new MainWindow();
             _window.Activate();
         }
     }

@@ -7,38 +7,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="SAnalytics.Desktop">
+    Title="SAnalytics">
 
     <Window.SystemBackdrop>
         <MicaBackdrop />
     </Window.SystemBackdrop>
 
-    <Grid Padding="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        
-        <TextBlock Grid.Row="0" Text="SAnalytics Dashboard" 
-                   Style="{StaticResource TitleTextBlockStyle}" 
-                   Margin="0,0,0,20"/>
-        
-        <StackPanel Grid.Row="1" Spacing="16">
-            <TextBlock Text="{x:Bind ViewModel.DatasetName, Mode=OneWay}" 
-                       Style="{StaticResource SubtitleTextBlockStyle}"/>
-            
-            <TextBlock Text="{x:Bind ViewModel.RecordCount, Mode=OneWay}" 
-                       Foreground="Gray"/>
-            
-            <TextBlock Text="{x:Bind ViewModel.LastUpdated, Mode=OneWay}" 
-                       Foreground="Gray"/>
-            
-            <Button Content="Daten laden" 
-                    Command="{x:Bind ViewModel.LoadDataCommand}"
-                    Style="{StaticResource AccentButtonStyle}"/>
-            
-            <ProgressRing IsActive="{x:Bind ViewModel.IsBusy, Mode=OneWay}"
-                          Width="30" Height="30"/>
-        </StackPanel>
-    </Grid>
+    <Frame x:Name="ContentFrame"/>
 </Window>

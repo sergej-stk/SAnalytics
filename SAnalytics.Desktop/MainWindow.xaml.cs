@@ -1,19 +1,26 @@
 using Microsoft.UI.Xaml;
-using SAnalytics.Desktop.ViewModels.Analytics;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using SAnalytics.Desktop.Views.Pages;
 
 namespace SAnalytics.Desktop
 {
     public sealed partial class MainWindow : Window
     {
-        public DashboardViewModel ViewModel { get; }
-
         public MainWindow()
         {
-            ViewModel = App.GetService<DashboardViewModel>();
             InitializeComponent();
+            ExtendsContentIntoTitleBar = true;
+            SetTitleBar(null);
+            ContentFrame.Navigate(typeof(LoginPage));
+        }
+
+        public void NavigateToDashboard()
+        {
+            ContentFrame.Navigate(typeof(DashboardPage));
+        }
+
+        public void NavigateToLogin()
+        {
+            ContentFrame.Navigate(typeof(LoginPage));
         }
     }
 }

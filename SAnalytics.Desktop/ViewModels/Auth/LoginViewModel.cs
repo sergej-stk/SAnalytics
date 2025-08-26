@@ -4,6 +4,7 @@ using SAnalytics.Desktop.Core.ViewModels;
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using Microsoft.UI.Xaml;
 
 namespace SAnalytics.Desktop.ViewModels.Auth;
 
@@ -74,7 +75,8 @@ public partial class LoginViewModel : BaseViewModel
             
             if (Username == "admin" && Password == "admin")
             {
-                // Erfolgreich eingeloggt
+                var mainWindow = ((App)Application.Current).MainWindow;
+                mainWindow?.NavigateToDashboard();
             }
             else
             {
@@ -92,5 +94,12 @@ public partial class LoginViewModel : BaseViewModel
     private void ForgotPassword()
     {
         // Passwort vergessen Logic
+    }
+    
+    public void ResetForm()
+    {
+        Password = string.Empty;
+        ErrorMessage = string.Empty;
+        IsBusy = false;
     }
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="SAnalytics.Desktop.Views.Pages.DashboardPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SAnalytics.Desktop.Views.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="SAnalytics Dashboard" 
+                       Style="{StaticResource TitleTextBlockStyle}"
+                       HorizontalAlignment="Left"/>
+            
+            <Button Content="Logout" 
+                    HorizontalAlignment="Right"
+                    Command="{x:Bind ViewModel.LogoutCommand}"/>
+        </Grid>
+        
+        <StackPanel Grid.Row="1" Spacing="16">
+            <TextBlock Text="{x:Bind ViewModel.DatasetName, Mode=OneWay}" 
+                       Style="{StaticResource SubtitleTextBlockStyle}"/>
+            
+            <TextBlock Text="{x:Bind ViewModel.RecordCount, Mode=OneWay}" 
+                       Foreground="Gray"/>
+            
+            <TextBlock Text="{x:Bind ViewModel.LastUpdated, Mode=OneWay}" 
+                       Foreground="Gray"/>
+            
+            <Button Content="Daten laden" 
+                    Command="{x:Bind ViewModel.LoadDataCommand}"
+                    Style="{StaticResource AccentButtonStyle}"/>
+            
+            <ProgressRing IsActive="{x:Bind ViewModel.IsBusy, Mode=OneWay}"
+                          Width="30" Height="30"/>
+        </StackPanel>
+    </Grid>
+</Page>

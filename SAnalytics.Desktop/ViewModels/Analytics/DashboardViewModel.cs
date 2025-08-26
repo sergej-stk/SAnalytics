@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using SAnalytics.Desktop.Core.ViewModels;
 using System;
 using System.Threading.Tasks;
+using Microsoft.UI.Xaml;
 
 namespace SAnalytics.Desktop.ViewModels.Analytics;
 
@@ -43,5 +44,12 @@ public partial class DashboardViewModel : BaseViewModel
     private void ExportData()
     {
         
+    }
+    
+    [RelayCommand]
+    private void Logout()
+    {
+        var mainWindow = ((App)Application.Current).MainWindow;
+        mainWindow?.NavigateToLogin();
     }
 }
