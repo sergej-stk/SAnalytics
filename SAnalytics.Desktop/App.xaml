@@ -1,18 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <Application
     x:Class="SAnalytics.Desktop.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:SAnalytics.Desktop"
-    xmlns:converters="using:SAnalytics.Desktop.Core.Converters">
+    xmlns:converters="using:SAnalytics.Desktop.Core.Converters"
+    xmlns:local="using:SAnalytics.Desktop">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-                <!-- Other merged dictionaries here -->
+                <!--  Other merged dictionaries here  -->
             </ResourceDictionary.MergedDictionaries>
-            <!-- Other app resources here -->
-            <converters:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter"/>
+            <!--  Other app resources here  -->
+            <converters:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

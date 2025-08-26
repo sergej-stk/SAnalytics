@@ -10,14 +10,6 @@
     mc:Ignorable="d">
 
     <Grid>
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Offset="0" Color="#FF1B1B2F" />
-                <GradientStop Offset="0.5" Color="#FF162447" />
-                <GradientStop Offset="1" Color="#FF1F4788" />
-            </LinearGradientBrush>
-        </Grid.Background>
-
         <!--  Language Selector in top right corner  -->
         <controls:LanguageSelector
             Margin="20"
@@ -88,16 +80,8 @@
                     <!--  Title  -->
                     <TextBlock
                         HorizontalAlignment="Center"
-                        FontSize="32"
-                        FontWeight="Light"
                         Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                        Text="SAnalytics" />
-
-                    <TextBlock
-                        Margin="0,-16,0,8"
-                        HorizontalAlignment="Center"
-                        FontSize="16"
-                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Style="{StaticResource TitleTextBlockStyle}"
                         Text="{x:Bind ViewModel.Title, Mode=OneWay}" />
 
                     <!--  Username  -->
@@ -129,18 +113,12 @@
 
                     <!--  Login Button  -->
                     <Button
-                        Height="48"
                         HorizontalAlignment="Stretch"
                         Command="{x:Bind ViewModel.LoginCommand}"
-                        Content="{x:Bind ViewModel.LoginButtonText, Mode=OneWay}"
-                        CornerRadius="8"
-                        FontSize="16"
-                        Style="{StaticResource AccentButtonStyle}" />
+                        Content="{x:Bind ViewModel.LoginButtonText, Mode=OneWay}" />
 
                     <!--  Loading Ring  -->
                     <ProgressRing
-                        Width="40"
-                        Height="40"
                         HorizontalAlignment="Center"
                         IsActive="{x:Bind ViewModel.IsBusy, Mode=OneWay}"
                         Visibility="{x:Bind ViewModel.IsBusy, Mode=OneWay}" />
