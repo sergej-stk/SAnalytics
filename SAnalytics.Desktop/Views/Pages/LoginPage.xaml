@@ -21,7 +21,7 @@
         <!--  Language Selector in top right corner  -->
         <controls:LanguageSelector
             Margin="20"
-            HorizontalAlignment="Right"
+            HorizontalAlignment="Left"
             VerticalAlignment="Top" />
 
         <!--  Animated background particles  -->
@@ -81,11 +81,9 @@
                 <StackPanel Spacing="24">
                     <!--  Logo/Icon  -->
                     <Image
-                        Width="80"
-                        Height="80"
-                        Margin="0,0,0,16"
-                        Source="ms-appx:///Assets/Square150x150Logo.png"
-                        Stretch="Uniform" />
+                        Width="180"
+                        Height="180"
+                        Source="/Assets/logo.png" />
 
                     <!--  Title  -->
                     <TextBlock
