@@ -39,15 +39,11 @@ public partial class LoginViewModel : BaseViewModel
     [ObservableProperty]
     private string _forgotPasswordText = string.Empty;
 
-    public LoginViewModel()
-    {
+    public LoginViewModel() =>
         UpdateLocalizedStrings();
-    }
 
-    protected override void OnLanguageChanged(object? sender, CultureInfo culture)
-    {
+    protected override void OnLanguageChanged(object? sender, CultureInfo culture) =>
         UpdateLocalizedStrings();
-    }
 
     private void UpdateLocalizedStrings()
     {
@@ -78,7 +74,7 @@ public partial class LoginViewModel : BaseViewModel
             
             if (Username == "admin" && Password == "admin")
             {
-                // Navigation zur Hauptapp würde hier passieren
+                // Erfolgreich eingeloggt
             }
             else
             {
