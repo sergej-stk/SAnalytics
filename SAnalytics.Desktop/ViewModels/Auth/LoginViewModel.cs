@@ -5,6 +5,7 @@ using System;
 using System.Globalization;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
 namespace SAnalytics.Desktop.ViewModels.Auth;
 
@@ -40,8 +41,29 @@ public partial class LoginViewModel : BaseViewModel
     [ObservableProperty]
     private string _forgotPasswordText = string.Empty;
 
-    public LoginViewModel() =>
+    [ObservableProperty]
+    private bool _showDebugButton;
+
+    [ObservableProperty]
+    private string _debugButtonText = string.Empty;
+
+    [ObservableProperty]
+    private string _debugDialogTitle = string.Empty;
+
+    [ObservableProperty]
+    private string _debugDialogContent = string.Empty;
+
+    [ObservableProperty]
+    private string _debugDialogYes = string.Empty;
+
+    [ObservableProperty]
+    private string _debugDialogCancel = string.Empty;
+
+    public LoginViewModel()
+    {
         UpdateLocalizedStrings();
+        InitializeDebugMode();
+    }
 
     protected override void OnLanguageChanged(object? sender, CultureInfo culture) =>
         UpdateLocalizedStrings();
@@ -54,6 +76,49 @@ public partial class LoginViewModel : BaseViewModel
         RememberMeLabel = GetLocalizedString("RememberMe");
         LoginButtonText = GetLocalizedString("Login");
         ForgotPasswordText = GetLocalizedString("ForgotPassword");
+        DebugButtonText = GetLocalizedString("DebugButtonText");
+        DebugDialogTitle = GetLocalizedString("DebugDialogTitle");
+        DebugDialogContent = GetLocalizedString("DebugDialogContent");
+        DebugDialogYes = GetLocalizedString("DebugDialogYes");
+        DebugDialogCancel = GetLocalizedString("DebugDialogCancel");
+    }
+
+    private void InitializeDebugMode()
+    {
+#if DEBUG
+        ShowDebugButton = true;
+#else
+        ShowDebugButton = false;
+#endif
+    }
+
+    [RelayCommand]
+    private async Task ShowDebugDialogAsync()
+    {
+#if DEBUG
+        var dialog = new ContentDialog
+        {
+            Title = DebugDialogTitle,
+            Content = DebugDialogContent,
+            PrimaryButtonText = DebugDialogYes,
+            SecondaryButtonText = DebugDialogCancel,
+            DefaultButton = ContentDialogButton.Primary
+        };
+
+        dialog.XamlRoot = ((App)Application.Current).MainWindow?.Content?.XamlRoot;
+
+        var result = await dialog.ShowAsync();
+        
+        if (result == ContentDialogResult.Primary)
+        {
+            Username = "admin";
+            Password = "admin";
+            ErrorMessage = string.Empty;
+            
+            // Auto-Login ausführen
+            await LoginAsync();
+        }
+#endif
     }
     
     [RelayCommand]

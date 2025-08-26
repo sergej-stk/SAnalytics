@@ -183,4 +183,19 @@
   <data name="Language_French" xml:space="preserve">
     <value>Français</value>
   </data>
+  <data name="DebugButtonText" xml:space="preserve">
+    <value>Debug</value>
+  </data>
+  <data name="DebugDialogTitle" xml:space="preserve">
+    <value>Debug Login</value>
+  </data>
+  <data name="DebugDialogContent" xml:space="preserve">
+    <value>Do you want to fill in the debug credentials (admin/admin) and automatically log in?</value>
+  </data>
+  <data name="DebugDialogYes" xml:space="preserve">
+    <value>Yes, login</value>
+  </data>
+  <data name="DebugDialogCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
 </root>

@@ -183,4 +183,19 @@
   <data name="Language_French" xml:space="preserve">
     <value>Français</value>
   </data>
+  <data name="DebugButtonText" xml:space="preserve">
+    <value>Отладка</value>
+  </data>
+  <data name="DebugDialogTitle" xml:space="preserve">
+    <value>Отладочная авторизация</value>
+  </data>
+  <data name="DebugDialogContent" xml:space="preserve">
+    <value>Хотите заполнить отладочные данные (admin/admin) и автоматически войти?</value>
+  </data>
+  <data name="DebugDialogYes" xml:space="preserve">
+    <value>Да, войти</value>
+  </data>
+  <data name="DebugDialogCancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
 </root>

@@ -183,4 +183,19 @@
   <data name="Language_French" xml:space="preserve">
     <value>Français</value>
   </data>
+  <data name="DebugButtonText" xml:space="preserve">
+    <value>Débogage</value>
+  </data>
+  <data name="DebugDialogTitle" xml:space="preserve">
+    <value>Connexion de débogage</value>
+  </data>
+  <data name="DebugDialogContent" xml:space="preserve">
+    <value>Voulez-vous remplir les identifiants de débogage (admin/admin) et vous connecter automatiquement ?</value>
+  </data>
+  <data name="DebugDialogYes" xml:space="preserve">
+    <value>Oui, se connecter</value>
+  </data>
+  <data name="DebugDialogCancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
 </root>

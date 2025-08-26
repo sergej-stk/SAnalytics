@@ -132,5 +132,22 @@
                 </StackPanel>
             </Border>
         </Grid>
+
+        <!-- Debug Button (bottom left, only in DEBUG) -->
+        <Button
+            x:Name="DebugButton"
+            Margin="20"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Background="{ThemeResource SystemFillColorAttentionBrush}"
+            Command="{x:Bind ViewModel.ShowDebugDialogCommand}"
+            FontSize="12"
+            Padding="8,4"
+            Visibility="{x:Bind ViewModel.ShowDebugButton, Mode=OneWay}">
+            <StackPanel Orientation="Horizontal" Spacing="4">
+                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE90F;" FontSize="12" />
+                <TextBlock Text="{x:Bind ViewModel.DebugButtonText, Mode=OneWay}" FontSize="12" />
+            </StackPanel>
+        </Button>
     </Grid>
 </Page>
