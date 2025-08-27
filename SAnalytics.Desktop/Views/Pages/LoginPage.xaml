@@ -32,7 +32,7 @@
                 Width="100"
                 Height="100"
                 CacheMode="BitmapCache"
-                Fill="#20FFFFFF">
+                Fill="#20808080">
                 <Ellipse.RenderTransform>
                     <CompositeTransform x:Name="Particle1Transform" />
                 </Ellipse.RenderTransform>
@@ -44,7 +44,7 @@
                 Width="60"
                 Height="60"
                 CacheMode="BitmapCache"
-                Fill="#15FFFFFF">
+                Fill="#15808080">
                 <Ellipse.RenderTransform>
                     <CompositeTransform x:Name="Particle2Transform" />
                 </Ellipse.RenderTransform>
@@ -56,7 +56,7 @@
                 Width="80"
                 Height="80"
                 CacheMode="BitmapCache"
-                Fill="#10FFFFFF">
+                Fill="#10808080">
                 <Ellipse.RenderTransform>
                     <CompositeTransform x:Name="Particle3Transform" />
                 </Ellipse.RenderTransform>
@@ -68,7 +68,7 @@
                 Width="40"
                 Height="40"
                 CacheMode="BitmapCache"
-                Fill="#25FFFFFF">
+                Fill="#25808080">
                 <Ellipse.RenderTransform>
                     <CompositeTransform x:Name="Particle4Transform" />
                 </Ellipse.RenderTransform>
@@ -80,7 +80,7 @@
                 Width="90"
                 Height="90"
                 CacheMode="BitmapCache"
-                Fill="#12FFFFFF">
+                Fill="#12808080">
                 <Ellipse.RenderTransform>
                     <CompositeTransform x:Name="Particle5Transform" />
                 </Ellipse.RenderTransform>
