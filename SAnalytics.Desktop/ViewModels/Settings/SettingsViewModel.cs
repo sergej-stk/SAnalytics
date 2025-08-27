@@ -16,6 +16,12 @@ public partial class SettingsViewModel : BaseViewModel
     [ObservableProperty]
     private string _languageLabel = string.Empty;
 
+    [ObservableProperty]
+    private string _additionalSettingsLabel = string.Empty;
+
+    [ObservableProperty]
+    private string _additionalOptionsLabel = string.Empty;
+
     public ObservableCollection<Language> AvailableLanguages { get; }
 
     public SettingsViewModel()
@@ -31,8 +37,7 @@ public partial class SettingsViewModel : BaseViewModel
         UpdateLocalizedStrings();
         if (AvailableLanguages != null && AvailableLanguages.Any())
         {
-            _selectedLanguage = GetCurrentLanguage();
-            OnPropertyChanged(nameof(SelectedLanguage));
+            SelectedLanguage = GetCurrentLanguage();
         }
     }
 
@@ -40,6 +45,8 @@ public partial class SettingsViewModel : BaseViewModel
     {
         Title = GetLocalizedString("Settings");
         LanguageLabel = GetLocalizedString("Language");
+        AdditionalSettingsLabel = GetLocalizedString("AdditionalSettings");
+        AdditionalOptionsLabel = GetLocalizedString("AdditionalOptions");
     }
 
     private Language GetCurrentLanguage()

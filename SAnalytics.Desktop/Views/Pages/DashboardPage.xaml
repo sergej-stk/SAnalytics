@@ -8,9 +8,151 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <NavigationView>
+    <NavigationView x:Name="MainNavigationView" IsSettingsVisible="True">
         <NavigationView.MenuItems>
-            <NavigationViewItem Content="Home" Icon="Home" />
+            <NavigationViewItem
+                Content="Dashboard"
+                Icon="Home"
+                Tag="Dashboard" />
         </NavigationView.MenuItems>
+
+        <NavigationView.FooterMenuItems>
+            <NavigationViewItem
+                Content="Abmelden"                  
+                Tag="Logout" >
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xF3B1;" />
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+        </NavigationView.FooterMenuItems>
+
+        <NavigationView.Content>
+            <Grid>
+                <!--  Dashboard Content  -->
+                <ScrollViewer x:Name="DashboardContent">
+                    <StackPanel Margin="40" Spacing="24">
+                        <!--  Dashboard Header  -->
+                        <TextBlock
+                            Margin="0,0,0,16"
+                            Style="{ThemeResource TitleLargeTextBlockStyle}"
+                            Text="{x:Bind ViewModel.Title, Mode=OneWay}" />
+
+                        <!--  Dataset Information Section  -->
+                        <StackPanel Spacing="12">
+                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Dataset Information" />
+
+                            <Border
+                                Padding="20"
+                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0" Spacing="8">
+                                        <TextBlock>
+                                            <Run FontWeight="SemiBold" Text="Name: " />
+                                            <Run Text="{x:Bind ViewModel.DatasetName, Mode=OneWay}" />
+                                        </TextBlock>
+
+                                        <TextBlock>
+                                            <Run FontWeight="SemiBold" Text="Anzahl Datensätze: " />
+                                            <Run Text="{x:Bind ViewModel.RecordCount, Mode=OneWay}" />
+                                        </TextBlock>
+
+                                        <TextBlock>
+                                            <Run FontWeight="SemiBold" Text="Zuletzt aktualisiert: " />
+                                            <Run Text="{x:Bind ViewModel.LastUpdated, Mode=OneWay}" />
+                                        </TextBlock>
+                                    </StackPanel>
+
+                                    <StackPanel
+                                        Grid.Column="1"
+                                        VerticalAlignment="Top"
+                                        Spacing="8">
+                                        <Button
+                                            Command="{x:Bind ViewModel.LoadDataCommand}"
+                                            Content="Daten laden"
+                                            IsEnabled="{x:Bind ViewModel.IsBusy, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}" />
+
+                                        <Button
+                                            Command="{x:Bind ViewModel.ExportDataCommand}"
+                                            Content="Exportieren"
+                                            Style="{ThemeResource AccentButtonStyle}" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+
+                        <!--  Loading Indicator  -->
+                        <ProgressRing
+                            HorizontalAlignment="Center"
+                            IsActive="{x:Bind ViewModel.IsBusy, Mode=OneWay}"
+                            Visibility="{x:Bind ViewModel.IsBusy, Mode=OneWay}" />
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!--  Settings Content  -->
+                <ScrollViewer x:Name="SettingsContent" Visibility="Collapsed">
+                    <StackPanel Margin="40" Spacing="24">
+                        <!--  Settings Header  -->
+                        <TextBlock
+                            Margin="0,0,0,16"
+                            Style="{ThemeResource TitleLargeTextBlockStyle}"
+                            Text="{x:Bind SettingsViewModel.Title, Mode=OneWay}" />
+
+                        <!--  Language Section  -->
+                        <StackPanel Spacing="12">
+                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="{x:Bind SettingsViewModel.LanguageLabel, Mode=OneWay}" />
+
+                            <Border
+                                Padding="16"
+                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        Style="{ThemeResource BodyStrongTextBlockStyle}"
+                                        Text="{x:Bind SettingsViewModel.LanguageLabel, Mode=OneWay}" />
+
+                                    <ComboBox
+                                        MinWidth="120"
+                                        VerticalAlignment="Center"
+                                        DisplayMemberPath="NativeName"
+                                        ItemsSource="{x:Bind SettingsViewModel.AvailableLanguages}"
+                                        SelectedItem="{x:Bind SettingsViewModel.SelectedLanguage, Mode=TwoWay}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <!--  Other Settings Section  -->
+                        <StackPanel Spacing="12">
+                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="{x:Bind SettingsViewModel.AdditionalSettingsLabel, Mode=OneWay}" />
+
+                            <Border
+                                Padding="16"
+                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8">
+                                <StackPanel Spacing="16">
+                                    <!--  Placeholder for future settings  -->
+                                    <TextBlock
+                                        Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                        Text="{x:Bind SettingsViewModel.AdditionalOptionsLabel, Mode=OneWay}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </NavigationView.Content>
     </NavigationView>
 </Page>
