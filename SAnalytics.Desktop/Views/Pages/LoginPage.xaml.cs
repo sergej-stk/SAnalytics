@@ -12,11 +12,17 @@ public sealed partial class LoginPage : Page
     {
         ViewModel = App.GetService<LoginViewModel>();
         InitializeComponent();
+        
+        // Start particle animations when page loads
+        this.Loaded += (sender, e) => ParticleAnimation.Begin();
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
         ViewModel.ResetForm();
+        
+        // Restart animations when navigating to this page
+        ParticleAnimation.Begin();
     }
 }

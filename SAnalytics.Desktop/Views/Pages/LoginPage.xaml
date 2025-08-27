@@ -17,37 +17,137 @@
             VerticalAlignment="Top" />
 
         <!--  Animated background particles  -->
-        <Canvas>
+        <Canvas x:Name="ParticlesCanvas" CacheMode="BitmapCache">
             <Ellipse
+                x:Name="Particle1"
                 Canvas.Left="100"
                 Canvas.Top="200"
                 Width="100"
                 Height="100"
-                Fill="#20FFFFFF">
+                Fill="#20FFFFFF"
+                CacheMode="BitmapCache">
                 <Ellipse.RenderTransform>
-                    <CompositeTransform />
+                    <CompositeTransform x:Name="Particle1Transform" />
                 </Ellipse.RenderTransform>
             </Ellipse>
             <Ellipse
+                x:Name="Particle2"
                 Canvas.Left="800"
                 Canvas.Top="300"
                 Width="60"
                 Height="60"
-                Fill="#15FFFFFF">
+                Fill="#15FFFFFF"
+                CacheMode="BitmapCache">
                 <Ellipse.RenderTransform>
-                    <CompositeTransform />
+                    <CompositeTransform x:Name="Particle2Transform" />
                 </Ellipse.RenderTransform>
             </Ellipse>
             <Ellipse
+                x:Name="Particle3"
                 Canvas.Left="300"
                 Canvas.Top="500"
                 Width="80"
                 Height="80"
-                Fill="#10FFFFFF">
+                Fill="#10FFFFFF"
+                CacheMode="BitmapCache">
                 <Ellipse.RenderTransform>
-                    <CompositeTransform />
+                    <CompositeTransform x:Name="Particle3Transform" />
                 </Ellipse.RenderTransform>
             </Ellipse>
+            <Ellipse
+                x:Name="Particle4"
+                Canvas.Left="50"
+                Canvas.Top="450"
+                Width="40"
+                Height="40"
+                Fill="#25FFFFFF"
+                CacheMode="BitmapCache">
+                <Ellipse.RenderTransform>
+                    <CompositeTransform x:Name="Particle4Transform" />
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse
+                x:Name="Particle5"
+                Canvas.Left="750"
+                Canvas.Top="150"
+                Width="90"
+                Height="90"
+                Fill="#12FFFFFF"
+                CacheMode="BitmapCache">
+                <Ellipse.RenderTransform>
+                    <CompositeTransform x:Name="Particle5Transform" />
+                </Ellipse.RenderTransform>
+            </Ellipse>
+
+            <!-- Optimized Storyboard for smooth particle animations -->
+            <Canvas.Resources>
+                <Storyboard x:Name="ParticleAnimation" RepeatBehavior="Forever">
+                    <!-- Particle 1 - Simple Y movement only -->
+                    <DoubleAnimation
+                        Storyboard.TargetName="Particle1Transform"
+                        Storyboard.TargetProperty="TranslateY"
+                        From="0"
+                        To="-25"
+                        Duration="0:0:12"
+                        AutoReverse="True">
+                        <DoubleAnimation.EasingFunction>
+                            <QuadraticEase EasingMode="EaseInOut" />
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+
+                    <!-- Particle 2 - Simple X movement only -->
+                    <DoubleAnimation
+                        Storyboard.TargetName="Particle2Transform"
+                        Storyboard.TargetProperty="TranslateX"
+                        From="0"
+                        To="-20"
+                        Duration="0:0:10"
+                        AutoReverse="True">
+                        <DoubleAnimation.EasingFunction>
+                            <QuadraticEase EasingMode="EaseInOut" />
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+
+                    <!-- Particle 3 - Simple Y movement -->
+                    <DoubleAnimation
+                        Storyboard.TargetName="Particle3Transform"
+                        Storyboard.TargetProperty="TranslateY"
+                        From="0"
+                        To="30"
+                        Duration="0:0:16"
+                        AutoReverse="True">
+                        <DoubleAnimation.EasingFunction>
+                            <QuadraticEase EasingMode="EaseInOut" />
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+
+                    <!-- Particle 4 - Simple X movement -->
+                    <DoubleAnimation
+                        Storyboard.TargetName="Particle4Transform"
+                        Storyboard.TargetProperty="TranslateX"
+                        From="0"
+                        To="25"
+                        Duration="0:0:8"
+                        AutoReverse="True">
+                        <DoubleAnimation.EasingFunction>
+                            <QuadraticEase EasingMode="EaseInOut" />
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+
+                    <!-- Particle 5 - Simple Y movement -->
+                    <DoubleAnimation
+                        Storyboard.TargetName="Particle5Transform"
+                        Storyboard.TargetProperty="TranslateY"
+                        From="0"
+                        To="-15"
+                        Duration="0:0:14"
+                        AutoReverse="True">
+                        <DoubleAnimation.EasingFunction>
+                            <QuadraticEase EasingMode="EaseInOut" />
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                </Storyboard>
+            </Canvas.Resources>
         </Canvas>
 
         <Grid
