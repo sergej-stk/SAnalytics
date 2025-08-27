@@ -232,22 +232,27 @@
         </Grid>
 
         <!--  Debug Button (bottom left, only in DEBUG)  -->
-        <Button
-            x:Name="DebugButton"
-            Margin="20"
-            Padding="8,4"
+
+        <InfoBar
+            Title="{x:Bind ViewModel.DebugButtonText, Mode=OneWay}"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
-            Command="{x:Bind ViewModel.ShowDebugDialogCommand}"
-            FontSize="12"
+            IsClosable="True"
+            IsOpen="True"
+            Severity="Informational"
             Visibility="{x:Bind ViewModel.ShowDebugButton, Mode=OneWay}">
-            <StackPanel Orientation="Horizontal" Spacing="4">
-                <FontIcon
-                    FontFamily="{StaticResource SymbolThemeFontFamily}"
-                    FontSize="12"
-                    Glyph="&#xE90F;" />
-                <TextBlock FontSize="12" Text="{x:Bind ViewModel.DebugButtonText, Mode=OneWay}" />
-            </StackPanel>
-        </Button>
+            <InfoBar.ActionButton>
+                <Button Command="{x:Bind ViewModel.ShowDebugDialogCommand}">
+                    <Button.Content>
+                        <FontIcon
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="18"
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            Glyph="&#xEC7A;" />
+                    </Button.Content>
+                </Button>
+            </InfoBar.ActionButton>
+        </InfoBar>
     </Grid>
 </Page>
