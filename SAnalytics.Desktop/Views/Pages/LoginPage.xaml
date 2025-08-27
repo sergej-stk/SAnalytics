@@ -14,13 +14,13 @@
             Margin="20"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Orientation="Vertical"
+            Orientation="Horizontal"
             Spacing="10">
-            <!--  Language Selector in top right corner  -->
-            <controls:LanguageSelector VerticalAlignment="Top" />
+            <!--  Theme Selector as hover button  -->
+            <controls:HoverThemeSelector />
 
-            <!--  Theme Selector in top left corner  -->
-            <controls:ThemeSelector />
+            <!--  Language Selector as hover button  -->
+            <controls:HoverLanguageSelector />
         </StackPanel>
 
         <!--  Animated background particles  -->

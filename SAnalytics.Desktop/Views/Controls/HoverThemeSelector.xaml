@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<UserControl
+    x:Class="SAnalytics.Desktop.Views.Controls.HoverThemeSelector"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Button
+        x:Name="ThemeButton"
+        Width="40"
+        Height="40"
+        Background="Transparent"
+        BorderBrush="Transparent"
+        CornerRadius="20">
+
+        <Button.Content>
+            <FontIcon
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="18"
+                Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                Glyph="&#xE793;" />
+        </Button.Content>
+
+        <Button.Flyout>
+            <Flyout x:Name="ThemeFlyout" Placement="Bottom">
+                <StackPanel Spacing="8">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Style="{ThemeResource BodyStrongTextBlockStyle}"
+                        Text="{x:Bind ViewModel.ThemeLabel, Mode=OneWay}" />
+
+                    <ComboBox
+                        x:Name="ThemeComboBox"
+                        MinWidth="150"
+                        HorizontalAlignment="Stretch"
+                        ItemsSource="{x:Bind ViewModel.AvailableThemes}"
+                        SelectedItem="{x:Bind ViewModel.SelectedTheme, Mode=TwoWay}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding LocalizedName}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+            </Flyout>
+        </Button.Flyout>
+    </Button>
+</UserControl>
