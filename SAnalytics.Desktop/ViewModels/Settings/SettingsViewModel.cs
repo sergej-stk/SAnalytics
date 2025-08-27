@@ -21,6 +21,9 @@ public partial class SettingsViewModel : BaseViewModel
 
     [ObservableProperty]
     private string _additionalOptionsLabel = string.Empty;
+    
+    [ObservableProperty]
+    private string _themeLabel = string.Empty;
 
     public ObservableCollection<Language> AvailableLanguages { get; }
 
@@ -45,6 +48,7 @@ public partial class SettingsViewModel : BaseViewModel
     {
         Title = GetLocalizedString("Settings");
         LanguageLabel = GetLocalizedString("Language");
+        ThemeLabel = GetLocalizedString("Theme");
         AdditionalSettingsLabel = GetLocalizedString("AdditionalSettings");
         AdditionalOptionsLabel = GetLocalizedString("AdditionalOptions");
     }

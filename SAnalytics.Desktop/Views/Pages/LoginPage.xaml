@@ -10,11 +10,18 @@
     mc:Ignorable="d">
 
     <Grid>
-        <!--  Language Selector in top right corner  -->
-        <controls:LanguageSelector
+        <StackPanel
             Margin="20"
             HorizontalAlignment="Left"
-            VerticalAlignment="Top" />
+            VerticalAlignment="Top"
+            Orientation="Vertical"
+            Spacing="10">
+            <!--  Language Selector in top right corner  -->
+            <controls:LanguageSelector VerticalAlignment="Top" />
+
+            <!--  Theme Selector in top left corner  -->
+            <controls:ThemeSelector />
+        </StackPanel>
 
         <!--  Animated background particles  -->
         <Canvas x:Name="ParticlesCanvas" CacheMode="BitmapCache">
@@ -24,8 +31,8 @@
                 Canvas.Top="200"
                 Width="100"
                 Height="100"
-                Fill="#20FFFFFF"
-                CacheMode="BitmapCache">
+                CacheMode="BitmapCache"
+                Fill="#20FFFFFF">
                 <Ellipse.RenderTransform>
                     <CompositeTransform x:Name="Particle1Transform" />
                 </Ellipse.RenderTransform>
@@ -36,8 +43,8 @@
                 Canvas.Top="300"
                 Width="60"
                 Height="60"
-                Fill="#15FFFFFF"
-                CacheMode="BitmapCache">
+                CacheMode="BitmapCache"
+                Fill="#15FFFFFF">
                 <Ellipse.RenderTransform>
                     <CompositeTransform x:Name="Particle2Transform" />
                 </Ellipse.RenderTransform>
@@ -48,8 +55,8 @@
                 Canvas.Top="500"
                 Width="80"
                 Height="80"
-                Fill="#10FFFFFF"
-                CacheMode="BitmapCache">
+                CacheMode="BitmapCache"
+                Fill="#10FFFFFF">
                 <Ellipse.RenderTransform>
                     <CompositeTransform x:Name="Particle3Transform" />
                 </Ellipse.RenderTransform>
@@ -60,8 +67,8 @@
                 Canvas.Top="450"
                 Width="40"
                 Height="40"
-                Fill="#25FFFFFF"
-                CacheMode="BitmapCache">
+                CacheMode="BitmapCache"
+                Fill="#25FFFFFF">
                 <Ellipse.RenderTransform>
                     <CompositeTransform x:Name="Particle4Transform" />
                 </Ellipse.RenderTransform>
@@ -72,76 +79,76 @@
                 Canvas.Top="150"
                 Width="90"
                 Height="90"
-                Fill="#12FFFFFF"
-                CacheMode="BitmapCache">
+                CacheMode="BitmapCache"
+                Fill="#12FFFFFF">
                 <Ellipse.RenderTransform>
                     <CompositeTransform x:Name="Particle5Transform" />
                 </Ellipse.RenderTransform>
             </Ellipse>
 
-            <!-- Optimized Storyboard for smooth particle animations -->
+            <!--  Optimized Storyboard for smooth particle animations  -->
             <Canvas.Resources>
                 <Storyboard x:Name="ParticleAnimation" RepeatBehavior="Forever">
-                    <!-- Particle 1 - Simple Y movement only -->
+                    <!--  Particle 1 - Simple Y movement only  -->
                     <DoubleAnimation
+                        AutoReverse="True"
                         Storyboard.TargetName="Particle1Transform"
                         Storyboard.TargetProperty="TranslateY"
                         From="0"
                         To="-25"
-                        Duration="0:0:12"
-                        AutoReverse="True">
+                        Duration="0:0:12">
                         <DoubleAnimation.EasingFunction>
                             <QuadraticEase EasingMode="EaseInOut" />
                         </DoubleAnimation.EasingFunction>
                     </DoubleAnimation>
 
-                    <!-- Particle 2 - Simple X movement only -->
+                    <!--  Particle 2 - Simple X movement only  -->
                     <DoubleAnimation
+                        AutoReverse="True"
                         Storyboard.TargetName="Particle2Transform"
                         Storyboard.TargetProperty="TranslateX"
                         From="0"
                         To="-20"
-                        Duration="0:0:10"
-                        AutoReverse="True">
+                        Duration="0:0:10">
                         <DoubleAnimation.EasingFunction>
                             <QuadraticEase EasingMode="EaseInOut" />
                         </DoubleAnimation.EasingFunction>
                     </DoubleAnimation>
 
-                    <!-- Particle 3 - Simple Y movement -->
+                    <!--  Particle 3 - Simple Y movement  -->
                     <DoubleAnimation
+                        AutoReverse="True"
                         Storyboard.TargetName="Particle3Transform"
                         Storyboard.TargetProperty="TranslateY"
                         From="0"
                         To="30"
-                        Duration="0:0:16"
-                        AutoReverse="True">
+                        Duration="0:0:16">
                         <DoubleAnimation.EasingFunction>
                             <QuadraticEase EasingMode="EaseInOut" />
                         </DoubleAnimation.EasingFunction>
                     </DoubleAnimation>
 
-                    <!-- Particle 4 - Simple X movement -->
+                    <!--  Particle 4 - Simple X movement  -->
                     <DoubleAnimation
+                        AutoReverse="True"
                         Storyboard.TargetName="Particle4Transform"
                         Storyboard.TargetProperty="TranslateX"
                         From="0"
                         To="25"
-                        Duration="0:0:8"
-                        AutoReverse="True">
+                        Duration="0:0:8">
                         <DoubleAnimation.EasingFunction>
                             <QuadraticEase EasingMode="EaseInOut" />
                         </DoubleAnimation.EasingFunction>
                     </DoubleAnimation>
 
-                    <!-- Particle 5 - Simple Y movement -->
+                    <!--  Particle 5 - Simple Y movement  -->
                     <DoubleAnimation
+                        AutoReverse="True"
                         Storyboard.TargetName="Particle5Transform"
                         Storyboard.TargetProperty="TranslateY"
                         From="0"
                         To="-15"
-                        Duration="0:0:14"
-                        AutoReverse="True">
+                        Duration="0:0:14">
                         <DoubleAnimation.EasingFunction>
                             <QuadraticEase EasingMode="EaseInOut" />
                         </DoubleAnimation.EasingFunction>
@@ -233,20 +240,22 @@
             </Border>
         </Grid>
 
-        <!-- Debug Button (bottom left, only in DEBUG) -->
+        <!--  Debug Button (bottom left, only in DEBUG)  -->
         <Button
             x:Name="DebugButton"
             Margin="20"
+            Padding="8,4"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
-            Background="{ThemeResource SystemFillColorAttentionBrush}"
             Command="{x:Bind ViewModel.ShowDebugDialogCommand}"
             FontSize="12"
-            Padding="8,4"
             Visibility="{x:Bind ViewModel.ShowDebugButton, Mode=OneWay}">
             <StackPanel Orientation="Horizontal" Spacing="4">
-                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE90F;" FontSize="12" />
-                <TextBlock Text="{x:Bind ViewModel.DebugButtonText, Mode=OneWay}" FontSize="12" />
+                <FontIcon
+                    FontFamily="{StaticResource SymbolThemeFontFamily}"
+                    FontSize="12"
+                    Glyph="&#xE90F;" />
+                <TextBlock FontSize="12" Text="{x:Bind ViewModel.DebugButtonText, Mode=OneWay}" />
             </StackPanel>
         </Button>
     </Grid>

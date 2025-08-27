@@ -3,6 +3,7 @@
     x:Class="SAnalytics.Desktop.Views.Pages.DashboardPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:SAnalytics.Desktop.Views.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:SAnalytics.Desktop.Views.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -128,6 +129,20 @@
                                         ItemsSource="{x:Bind SettingsViewModel.AvailableLanguages}"
                                         SelectedItem="{x:Bind SettingsViewModel.SelectedLanguage, Mode=TwoWay}" />
                                 </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <!--  Theme Section  -->
+                        <StackPanel Spacing="12">
+                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="{x:Bind SettingsViewModel.ThemeLabel, Mode=OneWay}" />
+
+                            <Border
+                                Padding="16"
+                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8">
+                                <controls:ThemeSelector />
                             </Border>
                         </StackPanel>
 

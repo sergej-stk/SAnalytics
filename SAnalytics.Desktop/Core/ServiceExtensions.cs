@@ -3,6 +3,7 @@ using SAnalytics.Desktop.Services;
 using SAnalytics.Desktop.ViewModels.Analytics;
 using SAnalytics.Desktop.ViewModels.Auth;
 using SAnalytics.Desktop.ViewModels.Settings;
+using SAnalytics.Desktop.ViewModels.Controls;
 
 namespace SAnalytics.Desktop.Core;
 
@@ -13,12 +14,14 @@ public static class ServiceExtensions
         services.AddTransient<DashboardViewModel>();
         services.AddTransient<LoginViewModel>();
         services.AddTransient<SettingsViewModel>();
+        services.AddTransient<ThemeSelectorViewModel>();
         return services;
     }
     
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddSingleton<ILocalizationService, LocalizationService>();
+        services.AddSingleton<IThemeService, ThemeService>();
         return services;
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 using SAnalytics.Desktop.Core;
+using SAnalytics.Desktop.Services;
 using SAnalytics.Desktop.Views.Pages;
 using System;
 
@@ -43,6 +44,10 @@ namespace SAnalytics.Desktop
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
+            // Initialize theme service
+            var themeService = GetService<IThemeService>();
+            themeService.Initialize();
+            
             _window = new MainWindow();
             _window.Activate();
         }
