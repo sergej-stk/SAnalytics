@@ -27,8 +27,6 @@
         <Canvas x:Name="ParticlesCanvas" CacheMode="BitmapCache">
             <Ellipse
                 x:Name="Particle1"
-                Canvas.Left="100"
-                Canvas.Top="200"
                 Width="100"
                 Height="100"
                 CacheMode="BitmapCache"
@@ -39,8 +37,6 @@
             </Ellipse>
             <Ellipse
                 x:Name="Particle2"
-                Canvas.Left="800"
-                Canvas.Top="300"
                 Width="60"
                 Height="60"
                 CacheMode="BitmapCache"
@@ -51,8 +47,6 @@
             </Ellipse>
             <Ellipse
                 x:Name="Particle3"
-                Canvas.Left="300"
-                Canvas.Top="500"
                 Width="80"
                 Height="80"
                 CacheMode="BitmapCache"
@@ -63,8 +57,6 @@
             </Ellipse>
             <Ellipse
                 x:Name="Particle4"
-                Canvas.Left="50"
-                Canvas.Top="450"
                 Width="40"
                 Height="40"
                 CacheMode="BitmapCache"
@@ -75,8 +67,6 @@
             </Ellipse>
             <Ellipse
                 x:Name="Particle5"
-                Canvas.Left="750"
-                Canvas.Top="150"
                 Width="90"
                 Height="90"
                 CacheMode="BitmapCache"
@@ -158,6 +148,7 @@
         </Canvas>
 
         <Grid
+            x:Name="LoginPanel"
             Width="500"
             MaxWidth="800"
             Margin="40"
