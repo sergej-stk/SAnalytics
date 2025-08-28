@@ -210,4 +210,238 @@
   <data name="ThemeDark" xml:space="preserve">
     <value>Dark</value>
   </data>
+  <data name="ExceptionDialog_Title" xml:space="preserve">
+    <value>Application Error</value>
+  </data>
+  <data name="ExceptionDialog_CopyDetails" xml:space="preserve">
+    <value>Copy Details</value>
+  </data>
+  <data name="ExceptionDialog_SaveReport" xml:space="preserve">
+    <value>Save Report</value>
+  </data>
+  <data name="ExceptionDialog_ErrorHeader" xml:space="preserve">
+    <value>An unexpected error has occurred</value>
+  </data>
+  <data name="ExceptionDialog_UserActionsTitle" xml:space="preserve">
+    <value>What you can do:</value>
+  </data>
+  <data name="ExceptionDialog_UserActionsMessage" xml:space="preserve">
+    <value>Try restarting the application. If the problem persists, copy the error details and contact support.</value>
+  </data>
+  <data name="ExceptionDialog_DetailsHeader" xml:space="preserve">
+    <value>Error Details</value>
+  </data>
+  <data name="ExceptionDialog_SystemInfoHeader" xml:space="preserve">
+    <value>System Information</value>
+  </data>
+  <data name="ExceptionDialog_DebugInfoHeader" xml:space="preserve">
+    <value>Debug Information</value>
+  </data>
+  <data name="ExceptionDialog_MemoryInfoLabel" xml:space="preserve">
+    <value>Memory Information:</value>
+  </data>
+  <data name="ExceptionDialog_ThreadInfoLabel" xml:space="preserve">
+    <value>Thread Information:</value>
+  </data>
+  <data name="ExceptionDialog_FileNotFound" xml:space="preserve">
+    <value>A required file was not found.</value>
+  </data>
+  <data name="ExceptionDialog_AccessDenied" xml:space="preserve">
+    <value>Access to a resource was denied.</value>
+  </data>
+  <data name="ExceptionDialog_Timeout" xml:space="preserve">
+    <value>The operation has timed out.</value>
+  </data>
+  <data name="ExceptionDialog_InvalidInput" xml:space="preserve">
+    <value>Invalid input was provided.</value>
+  </data>
+  <data name="ExceptionDialog_InvalidOperation" xml:space="preserve">
+    <value>An operation could not be performed.</value>
+  </data>
+  <data name="ExceptionDialog_NotSupported" xml:space="preserve">
+    <value>The requested operation is not supported.</value>
+  </data>
+  <data name="ExceptionDialog_UnexpectedError" xml:space="preserve">
+    <value>An unexpected error has occurred.</value>
+  </data>
+  <data name="ExceptionDialog_InnerException" xml:space="preserve">
+    <value>Inner Exception</value>
+  </data>
+  <data name="ExceptionDialog_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="ExceptionDialog_Message" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="ExceptionDialog_Source" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="ExceptionDialog_TargetMethod" xml:space="preserve">
+    <value>Target Method</value>
+  </data>
+  <data name="ExceptionDialog_StackTrace" xml:space="preserve">
+    <value>Stack Trace</value>
+  </data>
+  <data name="ExceptionDialog_AdditionalData" xml:space="preserve">
+    <value>Additional Data</value>
+  </data>
+  <data name="ExceptionDialog_StackTraceLimited" xml:space="preserve">
+    <value>Stack Trace (Limited)</value>
+  </data>
+  <data name="ExceptionDialog_MoreFramesHidden" xml:space="preserve">
+    <value>more frames hidden</value>
+  </data>
+  <data name="ExceptionDialog_Application" xml:space="preserve">
+    <value>Application</value>
+  </data>
+  <data name="ExceptionDialog_Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="ExceptionDialog_Timestamp" xml:space="preserve">
+    <value>Timestamp</value>
+  </data>
+  <data name="ExceptionDialog_Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="ExceptionDialog_BuildConfiguration" xml:space="preserve">
+    <value>Build Configuration</value>
+  </data>
+  <data name="ExceptionDialog_AssemblyLocation" xml:space="preserve">
+    <value>Assembly Location</value>
+  </data>
+  <data name="ExceptionDialog_OSVersion" xml:space="preserve">
+    <value>OS Version</value>
+  </data>
+  <data name="ExceptionDialog_DotNetVersion" xml:space="preserve">
+    <value>.NET Version</value>
+  </data>
+  <data name="ExceptionDialog_64BitOS" xml:space="preserve">
+    <value>64-bit OS</value>
+  </data>
+  <data name="ExceptionDialog_64BitProcess" xml:space="preserve">
+    <value>64-bit Process</value>
+  </data>
+  <data name="ExceptionDialog_ProcessorCount" xml:space="preserve">
+    <value>Processor Count</value>
+  </data>
+  <data name="ExceptionDialog_MachineName" xml:space="preserve">
+    <value>Machine Name</value>
+  </data>
+  <data name="ExceptionDialog_UserName" xml:space="preserve">
+    <value>User Name</value>
+  </data>
+  <data name="ExceptionDialog_WorkingDirectory" xml:space="preserve">
+    <value>Working Directory</value>
+  </data>
+  <data name="ExceptionDialog_OS" xml:space="preserve">
+    <value>OS</value>
+  </data>
+  <data name="ExceptionDialog_DotNet" xml:space="preserve">
+    <value>.NET</value>
+  </data>
+  <data name="ExceptionDialog_Processors" xml:space="preserve">
+    <value>Processors</value>
+  </data>
+  <data name="ExceptionDialog_WorkingMemory" xml:space="preserve">
+    <value>Working Memory</value>
+  </data>
+  <data name="ExceptionDialog_PrivateMemory" xml:space="preserve">
+    <value>Private Memory</value>
+  </data>
+  <data name="ExceptionDialog_GCTotalMemory" xml:space="preserve">
+    <value>GC Total Memory</value>
+  </data>
+  <data name="ExceptionDialog_PeakWorkingMemory" xml:space="preserve">
+    <value>Peak Working Memory</value>
+  </data>
+  <data name="ExceptionDialog_VirtualMemory" xml:space="preserve">
+    <value>Virtual Memory</value>
+  </data>
+  <data name="ExceptionDialog_PeakVirtualMemory" xml:space="preserve">
+    <value>Peak Virtual Memory</value>
+  </data>
+  <data name="ExceptionDialog_GCGen0Collections" xml:space="preserve">
+    <value>GC Gen 0 Collections</value>
+  </data>
+  <data name="ExceptionDialog_GCGen1Collections" xml:space="preserve">
+    <value>GC Gen 1 Collections</value>
+  </data>
+  <data name="ExceptionDialog_GCGen2Collections" xml:space="preserve">
+    <value>GC Gen 2 Collections</value>
+  </data>
+  <data name="ExceptionDialog_MemoryInfoUnavailable" xml:space="preserve">
+    <value>Memory information not available</value>
+  </data>
+  <data name="ExceptionDialog_CurrentThreadId" xml:space="preserve">
+    <value>Current Thread ID</value>
+  </data>
+  <data name="ExceptionDialog_BackgroundThread" xml:space="preserve">
+    <value>Background Thread</value>
+  </data>
+  <data name="ExceptionDialog_ThreadPoolThread" xml:space="preserve">
+    <value>Thread Pool Thread</value>
+  </data>
+  <data name="ExceptionDialog_ProcessId" xml:space="preserve">
+    <value>Process ID</value>
+  </data>
+  <data name="ExceptionDialog_AvailableWorkerThreads" xml:space="preserve">
+    <value>Available Worker Threads</value>
+  </data>
+  <data name="ExceptionDialog_AvailableCompletionPortThreads" xml:space="preserve">
+    <value>Available Completion Port Threads</value>
+  </data>
+  <data name="ExceptionDialog_MaxWorkerThreads" xml:space="preserve">
+    <value>Max Worker Threads</value>
+  </data>
+  <data name="ExceptionDialog_MaxCompletionPortThreads" xml:space="preserve">
+    <value>Max Completion Port Threads</value>
+  </data>
+  <data name="ExceptionDialog_ThreadInfoUnavailable" xml:space="preserve">
+    <value>Thread information not available</value>
+  </data>
+  <data name="ExceptionDialog_ReportTitle" xml:space="preserve">
+    <value>APPLICATION ERROR REPORT</value>
+  </data>
+  <data name="ExceptionDialog_ReportCreated" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="ExceptionDialog_ErrorMessage" xml:space="preserve">
+    <value>ERROR MESSAGE</value>
+  </data>
+  <data name="ExceptionDialog_ExceptionDetails" xml:space="preserve">
+    <value>EXCEPTION DETAILS</value>
+  </data>
+  <data name="ExceptionDialog_SystemInformation" xml:space="preserve">
+    <value>SYSTEM INFORMATION</value>
+  </data>
+  <data name="ExceptionDialog_MemoryInformation" xml:space="preserve">
+    <value>MEMORY INFORMATION</value>
+  </data>
+  <data name="ExceptionDialog_ThreadInformation" xml:space="preserve">
+    <value>THREAD INFORMATION</value>
+  </data>
+  <data name="ExceptionDialog_ReportDescription" xml:space="preserve">
+    <value>Application Error Report</value>
+  </data>
+  <data name="ExceptionDialog_CopySuccess" xml:space="preserve">
+    <value>Error details have been successfully copied to clipboard.</value>
+  </data>
+  <data name="ExceptionDialog_CopyError" xml:space="preserve">
+    <value>Error copying to clipboard</value>
+  </data>
+  <data name="ExceptionDialog_ReportFilename" xml:space="preserve">
+    <value>ErrorReport</value>
+  </data>
+  <data name="ExceptionDialog_TextFiles" xml:space="preserve">
+    <value>Text Files</value>
+  </data>
+  <data name="ExceptionDialog_LogFiles" xml:space="preserve">
+    <value>Log Files</value>
+  </data>
+  <data name="ExceptionDialog_SaveSuccess" xml:space="preserve">
+    <value>Error report has been saved as</value>
+  </data>
+  <data name="ExceptionDialog_SaveError" xml:space="preserve">
+    <value>Error saving file</value>
+  </data>
 </root>

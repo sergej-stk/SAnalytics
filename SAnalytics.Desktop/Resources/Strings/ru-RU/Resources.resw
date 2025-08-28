@@ -210,4 +210,238 @@
   <data name="ThemeDark" xml:space="preserve">
     <value>Тёмная</value>
   </data>
+  <data name="ExceptionDialog_Title" xml:space="preserve">
+    <value>Ошибка приложения</value>
+  </data>
+  <data name="ExceptionDialog_CopyDetails" xml:space="preserve">
+    <value>Копировать детали</value>
+  </data>
+  <data name="ExceptionDialog_SaveReport" xml:space="preserve">
+    <value>Сохранить отчёт</value>
+  </data>
+  <data name="ExceptionDialog_ErrorHeader" xml:space="preserve">
+    <value>Произошла неожиданная ошибка</value>
+  </data>
+  <data name="ExceptionDialog_UserActionsTitle" xml:space="preserve">
+    <value>Что вы можете сделать:</value>
+  </data>
+  <data name="ExceptionDialog_UserActionsMessage" xml:space="preserve">
+    <value>Попробуйте перезапустить приложение. Если проблема не исчезнет, скопируйте детали ошибки и обратитесь в службу поддержки.</value>
+  </data>
+  <data name="ExceptionDialog_DetailsHeader" xml:space="preserve">
+    <value>Детали ошибки</value>
+  </data>
+  <data name="ExceptionDialog_SystemInfoHeader" xml:space="preserve">
+    <value>Информация о системе</value>
+  </data>
+  <data name="ExceptionDialog_DebugInfoHeader" xml:space="preserve">
+    <value>Отладочная информация</value>
+  </data>
+  <data name="ExceptionDialog_MemoryInfoLabel" xml:space="preserve">
+    <value>Информация о памяти:</value>
+  </data>
+  <data name="ExceptionDialog_ThreadInfoLabel" xml:space="preserve">
+    <value>Информация о потоках:</value>
+  </data>
+  <data name="ExceptionDialog_FileNotFound" xml:space="preserve">
+    <value>Требуемый файл не найден.</value>
+  </data>
+  <data name="ExceptionDialog_AccessDenied" xml:space="preserve">
+    <value>Доступ к ресурсу запрещён.</value>
+  </data>
+  <data name="ExceptionDialog_Timeout" xml:space="preserve">
+    <value>Время операции истекло.</value>
+  </data>
+  <data name="ExceptionDialog_InvalidInput" xml:space="preserve">
+    <value>Предоставлены некорректные данные.</value>
+  </data>
+  <data name="ExceptionDialog_InvalidOperation" xml:space="preserve">
+    <value>Операция не может быть выполнена.</value>
+  </data>
+  <data name="ExceptionDialog_NotSupported" xml:space="preserve">
+    <value>Запрашиваемая операция не поддерживается.</value>
+  </data>
+  <data name="ExceptionDialog_UnexpectedError" xml:space="preserve">
+    <value>Произошла неожиданная ошибка.</value>
+  </data>
+  <data name="ExceptionDialog_InnerException" xml:space="preserve">
+    <value>Внутренняя исключительная ситуация</value>
+  </data>
+  <data name="ExceptionDialog_Type" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="ExceptionDialog_Message" xml:space="preserve">
+    <value>Сообщение</value>
+  </data>
+  <data name="ExceptionDialog_Source" xml:space="preserve">
+    <value>Источник</value>
+  </data>
+  <data name="ExceptionDialog_TargetMethod" xml:space="preserve">
+    <value>Целевой метод</value>
+  </data>
+  <data name="ExceptionDialog_StackTrace" xml:space="preserve">
+    <value>Трассировка стека</value>
+  </data>
+  <data name="ExceptionDialog_AdditionalData" xml:space="preserve">
+    <value>Дополнительные данные</value>
+  </data>
+  <data name="ExceptionDialog_StackTraceLimited" xml:space="preserve">
+    <value>Трассировка стека (ограниченная)</value>
+  </data>
+  <data name="ExceptionDialog_MoreFramesHidden" xml:space="preserve">
+    <value>больше кадров скрыто</value>
+  </data>
+  <data name="ExceptionDialog_Application" xml:space="preserve">
+    <value>Приложение</value>
+  </data>
+  <data name="ExceptionDialog_Version" xml:space="preserve">
+    <value>Версия</value>
+  </data>
+  <data name="ExceptionDialog_Timestamp" xml:space="preserve">
+    <value>Время</value>
+  </data>
+  <data name="ExceptionDialog_Unknown" xml:space="preserve">
+    <value>Неизвестно</value>
+  </data>
+  <data name="ExceptionDialog_BuildConfiguration" xml:space="preserve">
+    <value>Конфигурация сборки</value>
+  </data>
+  <data name="ExceptionDialog_AssemblyLocation" xml:space="preserve">
+    <value>Расположение сборки</value>
+  </data>
+  <data name="ExceptionDialog_OSVersion" xml:space="preserve">
+    <value>Версия ОС</value>
+  </data>
+  <data name="ExceptionDialog_DotNetVersion" xml:space="preserve">
+    <value>Версия .NET</value>
+  </data>
+  <data name="ExceptionDialog_64BitOS" xml:space="preserve">
+    <value>64-битная ОС</value>
+  </data>
+  <data name="ExceptionDialog_64BitProcess" xml:space="preserve">
+    <value>64-битный процесс</value>
+  </data>
+  <data name="ExceptionDialog_ProcessorCount" xml:space="preserve">
+    <value>Количество процессоров</value>
+  </data>
+  <data name="ExceptionDialog_MachineName" xml:space="preserve">
+    <value>Имя компьютера</value>
+  </data>
+  <data name="ExceptionDialog_UserName" xml:space="preserve">
+    <value>Имя пользователя</value>
+  </data>
+  <data name="ExceptionDialog_WorkingDirectory" xml:space="preserve">
+    <value>Рабочий каталог</value>
+  </data>
+  <data name="ExceptionDialog_OS" xml:space="preserve">
+    <value>ОС</value>
+  </data>
+  <data name="ExceptionDialog_DotNet" xml:space="preserve">
+    <value>.NET</value>
+  </data>
+  <data name="ExceptionDialog_Processors" xml:space="preserve">
+    <value>Процессоры</value>
+  </data>
+  <data name="ExceptionDialog_WorkingMemory" xml:space="preserve">
+    <value>Рабочая память</value>
+  </data>
+  <data name="ExceptionDialog_PrivateMemory" xml:space="preserve">
+    <value>Частная память</value>
+  </data>
+  <data name="ExceptionDialog_GCTotalMemory" xml:space="preserve">
+    <value>Общая память GC</value>
+  </data>
+  <data name="ExceptionDialog_PeakWorkingMemory" xml:space="preserve">
+    <value>Пик рабочей памяти</value>
+  </data>
+  <data name="ExceptionDialog_VirtualMemory" xml:space="preserve">
+    <value>Виртуальная память</value>
+  </data>
+  <data name="ExceptionDialog_PeakVirtualMemory" xml:space="preserve">
+    <value>Пик виртуальной памяти</value>
+  </data>
+  <data name="ExceptionDialog_GCGen0Collections" xml:space="preserve">
+    <value>Сборки GC поколения 0</value>
+  </data>
+  <data name="ExceptionDialog_GCGen1Collections" xml:space="preserve">
+    <value>Сборки GC поколения 1</value>
+  </data>
+  <data name="ExceptionDialog_GCGen2Collections" xml:space="preserve">
+    <value>Сборки GC поколения 2</value>
+  </data>
+  <data name="ExceptionDialog_MemoryInfoUnavailable" xml:space="preserve">
+    <value>Информация о памяти недоступна</value>
+  </data>
+  <data name="ExceptionDialog_CurrentThreadId" xml:space="preserve">
+    <value>ID текущего потока</value>
+  </data>
+  <data name="ExceptionDialog_BackgroundThread" xml:space="preserve">
+    <value>Фоновый поток</value>
+  </data>
+  <data name="ExceptionDialog_ThreadPoolThread" xml:space="preserve">
+    <value>Поток из пула потоков</value>
+  </data>
+  <data name="ExceptionDialog_ProcessId" xml:space="preserve">
+    <value>ID процесса</value>
+  </data>
+  <data name="ExceptionDialog_AvailableWorkerThreads" xml:space="preserve">
+    <value>Доступные рабочие потоки</value>
+  </data>
+  <data name="ExceptionDialog_AvailableCompletionPortThreads" xml:space="preserve">
+    <value>Доступные потоки порта завершения</value>
+  </data>
+  <data name="ExceptionDialog_MaxWorkerThreads" xml:space="preserve">
+    <value>Максимум рабочих потоков</value>
+  </data>
+  <data name="ExceptionDialog_MaxCompletionPortThreads" xml:space="preserve">
+    <value>Максимум потоков порта завершения</value>
+  </data>
+  <data name="ExceptionDialog_ThreadInfoUnavailable" xml:space="preserve">
+    <value>Информация о потоках недоступна</value>
+  </data>
+  <data name="ExceptionDialog_ReportTitle" xml:space="preserve">
+    <value>ОТЧЁТ ОБ ОШИБКЕ ПРИЛОЖЕНИЯ</value>
+  </data>
+  <data name="ExceptionDialog_ReportCreated" xml:space="preserve">
+    <value>Создан</value>
+  </data>
+  <data name="ExceptionDialog_ErrorMessage" xml:space="preserve">
+    <value>СООБЩЕНИЕ ОБ ОШИБКЕ</value>
+  </data>
+  <data name="ExceptionDialog_ExceptionDetails" xml:space="preserve">
+    <value>ДЕТАЛИ ИСКЛЮЧИТЕЛЬНОЙ СИТУАЦИИ</value>
+  </data>
+  <data name="ExceptionDialog_SystemInformation" xml:space="preserve">
+    <value>ИНФОРМАЦИЯ О СИСТЕМЕ</value>
+  </data>
+  <data name="ExceptionDialog_MemoryInformation" xml:space="preserve">
+    <value>ИНФОРМАЦИЯ О ПАМЯТИ</value>
+  </data>
+  <data name="ExceptionDialog_ThreadInformation" xml:space="preserve">
+    <value>ИНФОРМАЦИЯ О ПОТОКАХ</value>
+  </data>
+  <data name="ExceptionDialog_ReportDescription" xml:space="preserve">
+    <value>Отчёт об ошибке приложения</value>
+  </data>
+  <data name="ExceptionDialog_CopySuccess" xml:space="preserve">
+    <value>Детали ошибки успешно скопированы в буфер обмена.</value>
+  </data>
+  <data name="ExceptionDialog_CopyError" xml:space="preserve">
+    <value>Ошибка при копировании в буфер обмена</value>
+  </data>
+  <data name="ExceptionDialog_ReportFilename" xml:space="preserve">
+    <value>ОтчётОшибки</value>
+  </data>
+  <data name="ExceptionDialog_TextFiles" xml:space="preserve">
+    <value>Текстовые файлы</value>
+  </data>
+  <data name="ExceptionDialog_LogFiles" xml:space="preserve">
+    <value>Файлы журналов</value>
+  </data>
+  <data name="ExceptionDialog_SaveSuccess" xml:space="preserve">
+    <value>Отчёт об ошибке сохранён как</value>
+  </data>
+  <data name="ExceptionDialog_SaveError" xml:space="preserve">
+    <value>Ошибка при сохранении файла</value>
+  </data>
 </root>

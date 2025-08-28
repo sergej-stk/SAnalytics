@@ -5,11 +5,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="Anwendungsfehler"
-    CloseButtonText="Schließen"
+    Title="{x:Bind ViewModel.DialogTitle, Mode=OneWay}"
+    CloseButtonText="{x:Bind ViewModel.CloseButtonText, Mode=OneWay}"
     DefaultButton="Close"
-    PrimaryButtonText="Details kopieren"
-    SecondaryButtonText="Bericht speichern"
+    PrimaryButtonText="{x:Bind ViewModel.PrimaryButtonText, Mode=OneWay}"
+    SecondaryButtonText="{x:Bind ViewModel.SecondaryButtonText, Mode=OneWay}"
     mc:Ignorable="d">
 
     <ScrollViewer MaxWidth="900" MaxHeight="700">
@@ -26,12 +26,12 @@
                     <TextBlock
                         Foreground="{ThemeResource SystemFillColorCriticalBrush}"
                         Style="{StaticResource SubtitleTextBlockStyle}"
-                        Text="Ein unerwarteter Fehler ist aufgetreten" />
+                        Text="{x:Bind ViewModel.ErrorHeaderText, Mode=OneWay}" />
                     <TextBlock
                         x:Name="ErrorMessageBlock"
                         Margin="0,4,0,0"
                         Style="{StaticResource BodyTextBlockStyle}"
-                        Text="{x:Bind ErrorText}"
+                        Text="{x:Bind ViewModel.ErrorText, Mode=OneWay}"
                         TextWrapping="Wrap" />
                 </StackPanel>
             </StackPanel>
@@ -39,17 +39,17 @@
             <!--  User Actions  -->
             <InfoBar
                 x:Name="UserActionsBar"
-                Title="Was Sie tun können:"
+                Title="{x:Bind ViewModel.UserActionsTitle, Mode=OneWay}"
                 HorizontalAlignment="Stretch"
                 IsOpen="True"
-                Message="Versuchen Sie, die Anwendung neu zu starten. Wenn das Problem weiterhin besteht, kopieren Sie die Fehlerdetails und wenden Sie sich an den Support."
+                Message="{x:Bind ViewModel.UserActionsMessage, Mode=OneWay}"
                 Severity="Informational" />
 
             <!--  Exception Details - Debug/Release Mode Dependent  -->
             <Expander
                 x:Name="ExceptionDetailsExpander"
                 HorizontalAlignment="Stretch"
-                Header="Fehlerdetails"
+                Header="{x:Bind ViewModel.ExceptionDetailsHeader, Mode=OneWay}"
                 IsExpanded="True">
                 <ScrollViewer MaxHeight="300">
                     <TextBlock
@@ -58,7 +58,7 @@
                         FontFamily="Consolas"
                         FontSize="12"
                         IsTextSelectionEnabled="True"
-                        Text="{x:Bind ExceptionDetailsText}"
+                        Text="{x:Bind ViewModel.ExceptionDetailsText, Mode=OneWay}"
                         TextWrapping="Wrap" />
                 </ScrollViewer>
             </Expander>
@@ -66,7 +66,7 @@
             <!--  System Information  -->
             <Expander
                 HorizontalAlignment="Stretch"
-                Header="Systeminformationen"
+                Header="{x:Bind ViewModel.SystemInfoHeader, Mode=OneWay}"
                 IsEnabled="True">
                 <ScrollViewer MaxHeight="200">
                     <TextBlock
@@ -75,7 +75,7 @@
                         FontFamily="Consolas"
                         FontSize="12"
                         IsTextSelectionEnabled="True"
-                        Text="{x:Bind SystemInfoText}"
+                        Text="{x:Bind ViewModel.SystemInfoText, Mode=OneWay}"
                         TextWrapping="Wrap" />
                 </ScrollViewer>
             </Expander>
@@ -84,30 +84,30 @@
             <Expander
                 x:Name="DebugInfoExpander"
                 HorizontalAlignment="Stretch"
-                Header="Debug-Informationen"
-                Visibility="{x:Bind ShowDebugInfo}">
+                Header="{x:Bind ViewModel.DebugInfoHeader, Mode=OneWay}"
+                Visibility="{x:Bind ViewModel.ShowDebugInfo, Mode=OneWay}">
                 <ScrollViewer MaxHeight="250">
                     <StackPanel Spacing="12">
                         <TextBlock
                             FontWeight="SemiBold"
                             Style="{StaticResource CaptionTextBlockStyle}"
-                            Text="Speicherinformationen:" />
+                            Text="{x:Bind ViewModel.MemoryInfoLabel, Mode=OneWay}" />
                         <TextBlock
                             FontFamily="Consolas"
                             FontSize="11"
                             IsTextSelectionEnabled="True"
-                            Text="{x:Bind MemoryInfoText}" />
+                            Text="{x:Bind ViewModel.MemoryInfoText, Mode=OneWay}" />
 
                         <TextBlock
                             Margin="0,8,0,0"
                             FontWeight="SemiBold"
                             Style="{StaticResource CaptionTextBlockStyle}"
-                            Text="Thread-Informationen:" />
+                            Text="{x:Bind ViewModel.ThreadInfoLabel, Mode=OneWay}" />
                         <TextBlock
                             FontFamily="Consolas"
                             FontSize="11"
                             IsTextSelectionEnabled="True"
-                            Text="{x:Bind ThreadInfoText}" />
+                            Text="{x:Bind ViewModel.ThreadInfoText, Mode=OneWay}" />
                     </StackPanel>
                 </ScrollViewer>
             </Expander>
