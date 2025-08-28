@@ -59,6 +59,9 @@ public partial class LoginViewModel : BaseViewModel
     [ObservableProperty]
     private string _debugDialogCancel = string.Empty;
 
+    [ObservableProperty]
+    private string _debugModeInfoText = string.Empty;
+
     public LoginViewModel()
     {
         UpdateLocalizedStrings();
@@ -81,6 +84,7 @@ public partial class LoginViewModel : BaseViewModel
         DebugDialogContent = GetLocalizedString("DebugDialogContent");
         DebugDialogYes = GetLocalizedString("DebugDialogYes");
         DebugDialogCancel = GetLocalizedString("DebugDialogCancel");
+        DebugModeInfoText = GetLocalizedString("DebugModeInfoText");
     }
 
     private void InitializeDebugMode()

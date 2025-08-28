@@ -210,4 +210,19 @@
   <data name="ThemeDark" xml:space="preserve">
     <value>Dark</value>
   </data>
+  <data name="DebugModeInfo" xml:space="preserve">
+    <value>You are currently in debug mode. Use the button to quickly login with test credentials.</value>
+  </data>
+  <data name="DebugModeInfoText" xml:space="preserve">
+    <value>You are in debug mode.</value>
+  </data>
+  <data name="DebugModeInfoText_German" xml:space="preserve">
+    <value>Sie befinden sich im Debug-Modus.</value>
+  </data>
+  <data name="DebugModeInfoText_Russian" xml:space="preserve">
+    <value>Вы находитесь в режиме отладки.</value>
+  </data>
+  <data name="DebugModeInfoText_French" xml:space="preserve">
+    <value>Vous êtes en mode debug.</value>
+  </data>
 </root>
