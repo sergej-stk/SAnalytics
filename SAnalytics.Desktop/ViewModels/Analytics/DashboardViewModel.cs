@@ -43,7 +43,7 @@ public partial class DashboardViewModel : BaseViewModel
     [RelayCommand]
     private void ExportData()
     {
-        
+        throw new InvalidCastException("Simulierte Ausnahme für Testzwecke");
     }
     
     [RelayCommand]

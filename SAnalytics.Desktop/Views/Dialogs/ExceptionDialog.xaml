@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentDialog
+    x:Class="SAnalytics.Desktop.Views.Dialogs.ExceptionDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Anwendungsfehler"
+    CloseButtonText="Schließen"
+    DefaultButton="Close"
+    PrimaryButtonText="Details kopieren"
+    SecondaryButtonText="Bericht speichern"
+    mc:Ignorable="d">
+
+    <ScrollViewer MaxWidth="900" MaxHeight="700">
+        <StackPanel Margin="24" Spacing="20">
+
+            <!--  Error Header with Icon  -->
+            <StackPanel Orientation="Horizontal" Spacing="16">
+                <FontIcon
+                    FontFamily="{StaticResource SymbolThemeFontFamily}"
+                    FontSize="32"
+                    Foreground="{ThemeResource SystemFillColorCriticalBrush}"
+                    Glyph="&#xE783;" />
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock
+                        Foreground="{ThemeResource SystemFillColorCriticalBrush}"
+                        Style="{StaticResource SubtitleTextBlockStyle}"
+                        Text="Ein unerwarteter Fehler ist aufgetreten" />
+                    <TextBlock
+                        x:Name="ErrorMessageBlock"
+                        Margin="0,4,0,0"
+                        Style="{StaticResource BodyTextBlockStyle}"
+                        Text="{x:Bind ErrorText}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+            </StackPanel>
+
+            <!--  User Actions  -->
+            <InfoBar
+                x:Name="UserActionsBar"
+                Title="Was Sie tun können:"
+                HorizontalAlignment="Stretch"
+                IsOpen="True"
+                Message="Versuchen Sie, die Anwendung neu zu starten. Wenn das Problem weiterhin besteht, kopieren Sie die Fehlerdetails und wenden Sie sich an den Support."
+                Severity="Informational" />
+
+            <!--  Exception Details - Debug/Release Mode Dependent  -->
+            <Expander
+                x:Name="ExceptionDetailsExpander"
+                HorizontalAlignment="Stretch"
+                Header="Fehlerdetails"
+                IsExpanded="True">
+                <ScrollViewer MaxHeight="300">
+                    <TextBlock
+                        x:Name="ExceptionDetailsBlock"
+                        Padding="12"
+                        FontFamily="Consolas"
+                        FontSize="12"
+                        IsTextSelectionEnabled="True"
+                        Text="{x:Bind ExceptionDetailsText}"
+                        TextWrapping="Wrap" />
+                </ScrollViewer>
+            </Expander>
+
+            <!--  System Information  -->
+            <Expander
+                HorizontalAlignment="Stretch"
+                Header="Systeminformationen"
+                IsEnabled="True">
+                <ScrollViewer MaxHeight="200">
+                    <TextBlock
+                        x:Name="SystemInfoBlock"
+                        Padding="12"
+                        FontFamily="Consolas"
+                        FontSize="12"
+                        IsTextSelectionEnabled="True"
+                        Text="{x:Bind SystemInfoText}"
+                        TextWrapping="Wrap" />
+                </ScrollViewer>
+            </Expander>
+
+            <!--  Debug-Only Information  -->
+            <Expander
+                x:Name="DebugInfoExpander"
+                HorizontalAlignment="Stretch"
+                Header="Debug-Informationen"
+                Visibility="{x:Bind ShowDebugInfo}">
+                <ScrollViewer MaxHeight="250">
+                    <StackPanel Spacing="12">
+                        <TextBlock
+                            FontWeight="SemiBold"
+                            Style="{StaticResource CaptionTextBlockStyle}"
+                            Text="Speicherinformationen:" />
+                        <TextBlock
+                            FontFamily="Consolas"
+                            FontSize="11"
+                            IsTextSelectionEnabled="True"
+                            Text="{x:Bind MemoryInfoText}" />
+
+                        <TextBlock
+                            Margin="0,8,0,0"
+                            FontWeight="SemiBold"
+                            Style="{StaticResource CaptionTextBlockStyle}"
+                            Text="Thread-Informationen:" />
+                        <TextBlock
+                            FontFamily="Consolas"
+                            FontSize="11"
+                            IsTextSelectionEnabled="True"
+                            Text="{x:Bind ThreadInfoText}" />
+                    </StackPanel>
+                </ScrollViewer>
+            </Expander>
+
+        </StackPanel>
+    </ScrollViewer>
+</ContentDialog>
