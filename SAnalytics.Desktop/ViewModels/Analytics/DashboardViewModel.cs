@@ -1,10 +1,13 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
+using Microsoft.UI.Xaml;
 using SAnalytics.Desktop.Core.ViewModels;
+using SAnalytics.Desktop.Services;
+using SAnalytics.Desktop.Views.Pages;
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
-using Microsoft.UI.Xaml;
 
 namespace SAnalytics.Desktop.ViewModels.Analytics;
 
@@ -43,8 +46,19 @@ public partial class DashboardViewModel : BaseViewModel
     [ObservableProperty]
     private string _exportDataText = string.Empty;
 
-    public DashboardViewModel()
+    private readonly IAuthenticationService _authenticationService;
+    private readonly INavigationService _navigationService;
+
+    public DashboardViewModel(
+        ILocalizationService localizationService,
+        ILogger<DashboardViewModel> logger,
+        IAuthenticationService authenticationService,
+        INavigationService navigationService)
+        : base(localizationService, logger)
     {
+        _authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+        _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+        
         UpdateLocalizedStrings();
     }
 
@@ -79,18 +93,16 @@ public partial class DashboardViewModel : BaseViewModel
     [RelayCommand]
     private async Task LoadDataAsync()
     {
-        IsBusy = true;
-        try
+        await ExecuteWithBusyStateAsync(async (cancellationToken) =>
         {
-            await Task.Delay(2000);
+            // Simulate data loading
+            await Task.Delay(2000, cancellationToken);
             DatasetName = "Beispiel Dataset";
             RecordCount = 1000;
             LastUpdated = DateTime.Now.ToString("dd.MM.yyyy HH:mm");
-        }
-        finally
-        {
-            IsBusy = false;
-        }
+            
+            Logger.LogInformation("Dashboard data loaded: {DatasetName} with {RecordCount} records", DatasetName, RecordCount);
+        }, GetLocalizedString("LoadingData"));
     }
     
     [RelayCommand]
@@ -100,9 +112,15 @@ public partial class DashboardViewModel : BaseViewModel
     }
     
     [RelayCommand]
-    private void Logout()
+    private async Task LogoutAsync()
     {
-        var mainWindow = ((App)Application.Current).MainWindow;
-        mainWindow?.NavigateToLogin();
+        await ExecuteWithBusyStateAsync(async (cancellationToken) =>
+        {
+            await _authenticationService.SignOutAsync(cancellationToken);
+            Logger.LogInformation("User logged out from dashboard");
+            
+            // Navigate to login page
+            await _navigationService.NavigateToAsync<LoginPage>();
+        }, GetLocalizedString("LoggingOut"));
     }
 }

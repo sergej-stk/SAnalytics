@@ -1,7 +1,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml;
 using SAnalytics.Desktop.Core.ViewModels;
+using SAnalytics.Desktop.Services;
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -81,9 +83,14 @@ public partial class ExceptionDialogViewModel : BaseViewModel
 
     private string _fullReport = string.Empty;
 
-    public ExceptionDialogViewModel(Exception exception, string? userMessage = null)
+    public ExceptionDialogViewModel(
+        Exception exception, 
+        string? userMessage,
+        ILocalizationService localizationService,
+        ILogger<ExceptionDialogViewModel> logger)
+        : base(localizationService, logger)
     {
-        _exception = exception;
+        _exception = exception ?? throw new ArgumentNullException(nameof(exception));
         _userMessage = userMessage;
 
         // Set debug mode visibility
@@ -95,6 +102,8 @@ public partial class ExceptionDialogViewModel : BaseViewModel
 
         InitializeData();
         UpdateLocalizedStrings();
+        
+        Logger.LogWarning("ExceptionDialogViewModel created for exception: {ExceptionType}", exception.GetType().Name);
     }
 
     private void InitializeData()

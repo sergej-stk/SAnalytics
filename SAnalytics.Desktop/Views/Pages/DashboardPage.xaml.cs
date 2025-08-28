@@ -1,7 +1,9 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using SAnalytics.Desktop.ViewModels.Analytics;
 using SAnalytics.Desktop.ViewModels.Settings;
+using System;
 using System.Linq;
 
 namespace SAnalytics.Desktop.Views.Pages;
@@ -13,8 +15,9 @@ public sealed partial class DashboardPage : Page
 
     public DashboardPage()
     {
-        ViewModel = App.GetService<DashboardViewModel>();
-        SettingsViewModel = App.GetService<SettingsViewModel>();
+        var app = (App)Application.Current;
+        ViewModel = app.Services.GetRequiredService<DashboardViewModel>();
+        SettingsViewModel = app.Services.GetRequiredService<SettingsViewModel>();
         InitializeComponent();
         MainNavigationView.ItemInvoked += OnNavigationViewItemInvoked;
         MainNavigationView.SelectedItem = MainNavigationView.MenuItems.FirstOrDefault();

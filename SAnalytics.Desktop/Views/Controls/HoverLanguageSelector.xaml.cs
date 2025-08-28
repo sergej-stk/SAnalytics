@@ -1,5 +1,8 @@
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using SAnalytics.Desktop.ViewModels.Settings;
+using System;
 
 namespace SAnalytics.Desktop.Views.Controls
 {
@@ -9,8 +12,9 @@ namespace SAnalytics.Desktop.Views.Controls
 
         public HoverLanguageSelector()
         {
+            var app = (App)Application.Current;
+            ViewModel = app.Services.GetRequiredService<SettingsViewModel>();
             this.InitializeComponent();
-            ViewModel = App.GetService<SettingsViewModel>();
             this.DataContext = ViewModel;
         }
     }

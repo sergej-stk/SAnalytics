@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
@@ -13,7 +14,9 @@ public sealed partial class LoginPage : Page
 
     public LoginPage()
     {
-        ViewModel = App.GetService<LoginViewModel>();
+        // Get ViewModel from DI when creating the page
+        var app = (App)Application.Current;
+        ViewModel = app.Services.GetRequiredService<LoginViewModel>();
         InitializeComponent();
         
         // Start particle animations when page loads

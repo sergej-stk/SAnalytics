@@ -1,7 +1,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.Logging;
 using SAnalytics.Desktop.Core.ViewModels;
 using SAnalytics.Desktop.Models.Data;
 using SAnalytics.Desktop.Services;
+using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
@@ -16,7 +18,12 @@ public partial class ThemeOptionViewModel : BaseViewModel
     [ObservableProperty]
     private string _localizedName = string.Empty;
 
-    public ThemeOptionViewModel(AppTheme theme, string localizedKey)
+    public ThemeOptionViewModel(
+        AppTheme theme, 
+        string localizedKey,
+        ILocalizationService localizationService,
+        ILogger<ThemeOptionViewModel> logger)
+        : base(localizationService, logger)
     {
         Theme = theme;
         LocalizedKey = localizedKey;
@@ -46,13 +53,18 @@ public partial class ThemeSelectorViewModel : BaseViewModel
 
     public ObservableCollection<ThemeOptionViewModel> AvailableThemes { get; }
 
-    public ThemeSelectorViewModel(IThemeService themeService)
+    public ThemeSelectorViewModel(
+        IThemeService themeService,
+        ILocalizationService localizationService,
+        ILogger<ThemeSelectorViewModel> logger,
+        ILogger<ThemeOptionViewModel> themeOptionLogger)
+        : base(localizationService, logger)
     {
-        _themeService = themeService;
+        _themeService = themeService ?? throw new ArgumentNullException(nameof(themeService));
         
         AvailableThemes = new ObservableCollection<ThemeOptionViewModel>(
             ThemeOption.AvailableThemes.Select(theme => 
-                new ThemeOptionViewModel(theme.Theme, theme.LocalizedKey)));
+                new ThemeOptionViewModel(theme.Theme, theme.LocalizedKey, localizationService, themeOptionLogger)));
 
         _selectedTheme = AvailableThemes.FirstOrDefault(t => t.Theme == _themeService.CurrentTheme);
         
@@ -76,6 +88,7 @@ public partial class ThemeSelectorViewModel : BaseViewModel
         if (value != null && value.Theme != _themeService.CurrentTheme)
         {
             _themeService.SetTheme(value.Theme);
+            Logger.LogInformation("Theme changed to {Theme}", value.Theme);
         }
     }
     

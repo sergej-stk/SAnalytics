@@ -1,5 +1,8 @@
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using SAnalytics.Desktop.ViewModels.Controls;
+using System;
 
 namespace SAnalytics.Desktop.Views.Controls
 {
@@ -9,8 +12,9 @@ namespace SAnalytics.Desktop.Views.Controls
 
         public ThemeSelector()
         {
+            var app = (App)Application.Current;
+            ViewModel = app.Services.GetRequiredService<ThemeSelectorViewModel>();
             this.InitializeComponent();
-            ViewModel = App.GetService<ThemeSelectorViewModel>();
             this.DataContext = ViewModel;
         }
     }

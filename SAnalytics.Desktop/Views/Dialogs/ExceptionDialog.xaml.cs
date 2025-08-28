@@ -8,9 +8,17 @@ public sealed partial class ExceptionDialog : ContentDialog
 {
     public ExceptionDialogViewModel ViewModel { get; private set; }
 
-    public ExceptionDialog(Exception exception, string? userMessage = null)
+    public ExceptionDialog(Exception exception, string? userMessage = null, Func<Exception, string?, ExceptionDialogViewModel>? factory = null)
     {
-        ViewModel = new ExceptionDialogViewModel(exception, userMessage);
+        if (factory != null)
+        {
+            ViewModel = factory(exception, userMessage);
+        }
+        else
+        {
+            // Fallback - should not happen in normal DI usage
+            throw new InvalidOperationException("ExceptionDialog requires a ViewModel factory");
+        }
         this.InitializeComponent();
         
         // Set debug mode expander visibility

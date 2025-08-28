@@ -1,7 +1,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using SAnalytics.Desktop.Core.ViewModels;
 using SAnalytics.Desktop.Models.Data;
+using SAnalytics.Desktop.Services;
+using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
@@ -33,7 +36,10 @@ public partial class SettingsViewModel : BaseViewModel
 
     public ObservableCollection<Language> AvailableLanguages { get; }
 
-    public SettingsViewModel()
+    public SettingsViewModel(
+        ILocalizationService localizationService,
+        ILogger<SettingsViewModel> logger)
+        : base(localizationService, logger)
     {
         AvailableLanguages = new ObservableCollection<Language>(Language.SupportedLanguages);
         _selectedLanguage = Language.English; // Initialize with default first
@@ -66,15 +72,16 @@ public partial class SettingsViewModel : BaseViewModel
         if (AvailableLanguages == null || !AvailableLanguages.Any())
             return Language.English;
             
-        var currentCulture = _localizationService.CurrentCulture.Name;
+        var currentCulture = LocalizationService.CurrentCulture.Name;
         return AvailableLanguages.FirstOrDefault(l => l.Code == currentCulture) ?? Language.English;
     }
 
     partial void OnSelectedLanguageChanged(Language value)
     {
-        if (value != null && value.Code != _localizationService.CurrentCulture.Name)
+        if (value != null && value.Code != LocalizationService.CurrentCulture.Name)
         {
-            _localizationService.SetLanguage(value.Code);
+            LocalizationService.SetLanguage(value.Code);
+            Logger.LogInformation("Language changed to {Language}", value.Name);
         }
     }
 }

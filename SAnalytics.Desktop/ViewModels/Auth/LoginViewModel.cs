@@ -1,11 +1,14 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using SAnalytics.Desktop.Core.ViewModels;
+using SAnalytics.Desktop.Services;
+using SAnalytics.Desktop.Views.Pages;
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 
 namespace SAnalytics.Desktop.ViewModels.Auth;
 
@@ -19,9 +22,6 @@ public partial class LoginViewModel : BaseViewModel
     
     [ObservableProperty]
     private bool _rememberMe;
-    
-    [ObservableProperty]
-    private string _errorMessage = string.Empty;
     
     [ObservableProperty]
     private bool _isLoginAnimating;
@@ -62,8 +62,19 @@ public partial class LoginViewModel : BaseViewModel
     [ObservableProperty]
     private string _debugModeInfoText = string.Empty;
 
-    public LoginViewModel()
+    private readonly IAuthenticationService _authenticationService;
+    private readonly INavigationService _navigationService;
+
+    public LoginViewModel(
+        ILocalizationService localizationService,
+        ILogger<LoginViewModel> logger,
+        IAuthenticationService authenticationService,
+        INavigationService navigationService)
+        : base(localizationService, logger)
     {
+        _authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+        _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+        
         UpdateLocalizedStrings();
         InitializeDebugMode();
     }
@@ -125,34 +136,45 @@ public partial class LoginViewModel : BaseViewModel
     [RelayCommand]
     private async Task LoginAsync()
     {
-        if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
+        var success = await ExecuteWithBusyStateAsync(async (cancellationToken) =>
         {
-            ErrorMessage = GetLocalizedString("LoginError_FieldsRequired");
-            return;
-        }
-
-        IsBusy = true;
-        IsLoginAnimating = true;
-        ErrorMessage = string.Empty;
-        
-        try
-        {
-            await Task.CompletedTask;
-
-            if (Username == "admin" && Password == "admin")
+            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
             {
-                var mainWindow = ((App)Application.Current).MainWindow;
-                mainWindow?.NavigateToDashboard();
+                SetError(GetLocalizedString("LoginError_FieldsRequired"));
+                return;
             }
-            else
+
+            IsLoginAnimating = true;
+            ClearError();
+
+            try
             {
-                ErrorMessage = GetLocalizedString("LoginError_InvalidCredentials");
+                var result = await _authenticationService.AuthenticateAsync(Username, Password, RememberMe, cancellationToken);
+
+                if (result.IsSuccess && result.User != null)
+                {
+                    Logger.LogInformation("User {Username} logged in successfully", Username);
+                    
+                    // Navigate to dashboard using navigation service
+                    await _navigationService.NavigateToAsync<DashboardPage>();
+                }
+                else
+                {
+                    var errorMessage = result.ErrorMessage ?? GetLocalizedString("LoginError_InvalidCredentials");
+                    SetError(errorMessage);
+                    Logger.LogWarning("Login failed for user {Username}: {Error}", Username, errorMessage);
+                }
             }
-        }
-        finally
+            finally
+            {
+                IsLoginAnimating = false;
+            }
+        }, GetLocalizedString("LoggingIn"));
+
+        // Reset password on failure for security
+        if (!success)
         {
-            IsBusy = false;
-            IsLoginAnimating = false;
+            Password = string.Empty;
         }
     }
     
@@ -165,7 +187,7 @@ public partial class LoginViewModel : BaseViewModel
     public void ResetForm()
     {
         Password = string.Empty;
-        ErrorMessage = string.Empty;
-        IsBusy = false;
+        ClearError();
+        SetBusyState(false);
     }
 }
