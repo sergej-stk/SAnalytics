@@ -15,9 +15,6 @@ public static class ServiceExtensions
         services.AddTransient<LoginViewModel>();
         services.AddTransient<SettingsViewModel>();
         services.AddTransient<ThemeSelectorViewModel>();
-#if DEBUG
-        services.AddTransient<ExceptionTestViewModel>();
-#endif
         return services;
     }
     
