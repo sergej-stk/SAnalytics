@@ -108,7 +108,7 @@ public partial class DashboardViewModel : BaseViewModel
     [RelayCommand]
     private void ExportData()
     { 
-        throw new NotImplementedException("ExportData is not implemented yet.");
+        throw new NotImplementedException("ExportData feature is not yet implemented. This will be available in a future version.");
     }
     
     [RelayCommand]

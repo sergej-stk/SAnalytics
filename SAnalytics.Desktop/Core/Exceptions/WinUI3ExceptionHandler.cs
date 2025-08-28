@@ -1,4 +1,6 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
+using SAnalytics.Desktop.ViewModels.Dialogs;
 using SAnalytics.Desktop.Views.Dialogs;
 using System;
 using System.Diagnostics;
@@ -93,12 +95,21 @@ public static class WinUI3ExceptionHandler
             var mainWindow = GetMainWindow();
             if (mainWindow?.Content?.XamlRoot != null)
             {
-                _currentDialog = new ExceptionDialog(ex)
+                var factory = GetExceptionDialogFactory();
+                if (factory != null)
                 {
-                    XamlRoot = mainWindow.Content.XamlRoot
-                };
-                await _currentDialog.ShowAsync();
-                _currentDialog = null;
+                    _currentDialog = new ExceptionDialog(ex, null, factory)
+                    {
+                        XamlRoot = mainWindow.Content.XamlRoot
+                    };
+                    await _currentDialog.ShowAsync();
+                    _currentDialog = null;
+                }
+                else
+                {
+                    // Fallback if DI not available
+                    ShowSystemErrorMessage($"Application Error: {ex.Message}");
+                }
             }
         }
         catch (Exception dialogEx)
@@ -123,11 +134,20 @@ public static class WinUI3ExceptionHandler
             var mainWindow = GetMainWindow();
             if (mainWindow?.Content?.XamlRoot != null)
             {
-                var dialog = new ExceptionDialog(ex, userMessage)
+                var factory = GetExceptionDialogFactory();
+                if (factory != null)
                 {
-                    XamlRoot = mainWindow.Content.XamlRoot
-                };
-                await dialog.ShowAsync();
+                    var dialog = new ExceptionDialog(ex, userMessage, factory)
+                    {
+                        XamlRoot = mainWindow.Content.XamlRoot
+                    };
+                    await dialog.ShowAsync();
+                }
+                else
+                {
+                    // Fallback if DI not available
+                    ShowSystemErrorMessage($"Application Error: {ex.Message}");
+                }
             }
         }
         catch (Exception dialogEx)
@@ -145,6 +165,19 @@ public static class WinUI3ExceptionHandler
         try
         {
             return ((App)Application.Current).MainWindow;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+    
+    private static Func<Exception, string?, ExceptionDialogViewModel>? GetExceptionDialogFactory()
+    {
+        try
+        {
+            var app = (App)Application.Current;
+            return app.Services.GetService<Func<Exception, string?, ExceptionDialogViewModel>>();
         }
         catch
         {

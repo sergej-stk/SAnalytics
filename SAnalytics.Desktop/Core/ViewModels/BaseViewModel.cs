@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.Logging;
+using SAnalytics.Desktop.Core.Exceptions;
 using SAnalytics.Desktop.Services;
 using System;
 using System.Globalization;
@@ -155,6 +156,13 @@ public abstract partial class BaseViewModel : ObservableObject, IDisposable
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error executing async operation in {ViewModelType}", GetType().Name);
+            
+            // Show detailed exception dialog for specific exception types that need user attention
+            if (ShouldShowExceptionDialog(ex))
+            {
+                _ = Task.Run(async () => await WinUI3ExceptionHandler.ShowExceptionDialogAsync(ex));
+            }
+            
             SetError(GetLocalizedString("UnexpectedError"));
             return false;
         }
@@ -199,6 +207,13 @@ public abstract partial class BaseViewModel : ObservableObject, IDisposable
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error executing async operation in {ViewModelType}", GetType().Name);
+            
+            // Show detailed exception dialog for specific exception types that need user attention
+            if (ShouldShowExceptionDialog(ex))
+            {
+                _ = Task.Run(async () => await WinUI3ExceptionHandler.ShowExceptionDialogAsync(ex));
+            }
+            
             SetError(GetLocalizedString("UnexpectedError"));
             return default(T);
         }
@@ -217,6 +232,19 @@ public abstract partial class BaseViewModel : ObservableObject, IDisposable
     /// Gets the localization service instance.
     /// </summary>
     protected ILocalizationService LocalizationService => _localizationService;
+
+    /// <summary>
+    /// Determines if an exception should show the detailed exception dialog.
+    /// </summary>
+    /// <param name="ex">The exception to check.</param>
+    /// <returns>True if the exception dialog should be shown.</returns>
+    private static bool ShouldShowExceptionDialog(Exception ex)
+    {
+        // Show dialog for development/debugging exceptions
+        return ex is NotImplementedException or 
+               NotSupportedException or
+               InvalidOperationException;
+    }
 
     /// <summary>
     /// Releases all resources used by the BaseViewModel.
