@@ -4,7 +4,6 @@ using SAnalytics.Desktop.ViewModels.Analytics;
 using SAnalytics.Desktop.ViewModels.Auth;
 using SAnalytics.Desktop.ViewModels.Settings;
 using SAnalytics.Desktop.ViewModels.Controls;
-using SAnalytics.Desktop.ViewModels.Debug;
 
 namespace SAnalytics.Desktop.Core;
 
