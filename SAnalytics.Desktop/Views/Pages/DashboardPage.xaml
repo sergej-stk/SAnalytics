@@ -12,14 +12,14 @@
     <NavigationView x:Name="MainNavigationView" IsSettingsVisible="True">
         <NavigationView.MenuItems>
             <NavigationViewItem
-                Content="Dashboard"
+                Content="{x:Bind ViewModel.DashboardText, Mode=OneWay}"
                 Icon="Home"
                 Tag="Dashboard" />
         </NavigationView.MenuItems>
 
         <NavigationView.FooterMenuItems>
             <NavigationViewItem
-                Content="Abmelden"                  
+                Content="{x:Bind ViewModel.LogoutText, Mode=OneWay}"                  
                 Tag="Logout" >
                 <NavigationViewItem.Icon>
                     <FontIcon Glyph="&#xF3B1;" />
@@ -40,7 +40,7 @@
 
                         <!--  Dataset Information Section  -->
                         <StackPanel Spacing="12">
-                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Dataset Information" />
+                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.DatasetInformationText, Mode=OneWay}" />
 
                             <Border
                                 Padding="20"
@@ -56,17 +56,20 @@
 
                                     <StackPanel Grid.Column="0" Spacing="8">
                                         <TextBlock>
-                                            <Run FontWeight="SemiBold" Text="Name: " />
+                                            <Run FontWeight="SemiBold" Text="{x:Bind ViewModel.DatasetNameLabel, Mode=OneWay}" />
+                                            <Run Text=" " />
                                             <Run Text="{x:Bind ViewModel.DatasetName, Mode=OneWay}" />
                                         </TextBlock>
 
                                         <TextBlock>
-                                            <Run FontWeight="SemiBold" Text="Anzahl Datensätze: " />
+                                            <Run FontWeight="SemiBold" Text="{x:Bind ViewModel.RecordCountLabel, Mode=OneWay}" />
+                                            <Run Text=" " />
                                             <Run Text="{x:Bind ViewModel.RecordCount, Mode=OneWay}" />
                                         </TextBlock>
 
                                         <TextBlock>
-                                            <Run FontWeight="SemiBold" Text="Zuletzt aktualisiert: " />
+                                            <Run FontWeight="SemiBold" Text="{x:Bind ViewModel.LastUpdatedLabel, Mode=OneWay}" />
+                                            <Run Text=" " />
                                             <Run Text="{x:Bind ViewModel.LastUpdated, Mode=OneWay}" />
                                         </TextBlock>
                                     </StackPanel>
@@ -77,12 +80,12 @@
                                         Spacing="8">
                                         <Button
                                             Command="{x:Bind ViewModel.LoadDataCommand}"
-                                            Content="Daten laden"
+                                            Content="{x:Bind ViewModel.LoadDataText, Mode=OneWay}"
                                             IsEnabled="{x:Bind ViewModel.IsBusy, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}" />
 
                                         <Button
                                             Command="{x:Bind ViewModel.ExportDataCommand}"
-                                            Content="Exportieren"
+                                            Content="{x:Bind ViewModel.ExportDataText, Mode=OneWay}"
                                             Style="{ThemeResource AccentButtonStyle}" />
                                     </StackPanel>
                                 </Grid>

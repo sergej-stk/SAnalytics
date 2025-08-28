@@ -11,14 +11,14 @@
     <NavigationView x:Name="MainNavigationView" IsSettingsVisible="True">
         <NavigationView.MenuItems>
             <NavigationViewItem
-                Content="Dashboard"
+                Content="{x:Bind ViewModel.DashboardText, Mode=OneWay}"
                 Icon="Home"
                 Tag="Dashboard" />
         </NavigationView.MenuItems>
 
         <NavigationView.FooterMenuItems>
             <NavigationViewItem
-                Content="Abmelden"
+                Content="{x:Bind ViewModel.LogoutText, Mode=OneWay}"
                 Icon="ContactInfo"
                 Tag="Logout" />
         </NavigationView.FooterMenuItems>

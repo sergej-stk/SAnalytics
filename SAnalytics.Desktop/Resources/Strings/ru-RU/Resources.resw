@@ -444,4 +444,40 @@
   <data name="ExceptionDialog_SaveError" xml:space="preserve">
     <value>Ошибка при сохранении файла</value>
   </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Панель управления</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Выйти</value>
+  </data>
+  <data name="DatasetInformation" xml:space="preserve">
+    <value>Информация о наборе данных</value>
+  </data>
+  <data name="DatasetName" xml:space="preserve">
+    <value>Имя:</value>
+  </data>
+  <data name="RecordCount" xml:space="preserve">
+    <value>Количество записей:</value>
+  </data>
+  <data name="LastUpdated" xml:space="preserve">
+    <value>Последнее обновление:</value>
+  </data>
+  <data name="LoadData" xml:space="preserve">
+    <value>Загрузить данные</value>
+  </data>
+  <data name="ExportData" xml:space="preserve">
+    <value>Экспорт</value>
+  </data>
+  <data name="AdditionalSettings" xml:space="preserve">
+    <value>Дополнительные настройки</value>
+  </data>
+  <data name="AdditionalOptions" xml:space="preserve">
+    <value>Здесь в будущем могут быть добавлены дополнительные параметры.</value>
+  </data>
+  <data name="DebugModeInfo" xml:space="preserve">
+    <value>Вы находитесь в режиме отладки. Используйте кнопку для быстрого входа с тестовыми учетными данными.</value>
+  </data>
+  <data name="DebugModeInfoText" xml:space="preserve">
+    <value>Вы находитесь в режиме отладки.</value>
+  </data>
 </root>

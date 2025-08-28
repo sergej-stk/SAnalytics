@@ -25,6 +25,12 @@ public partial class SettingsViewModel : BaseViewModel
     [ObservableProperty]
     private string _themeLabel = string.Empty;
 
+    [ObservableProperty]
+    private string _dashboardText = string.Empty;
+
+    [ObservableProperty]
+    private string _logoutText = string.Empty;
+
     public ObservableCollection<Language> AvailableLanguages { get; }
 
     public SettingsViewModel()
@@ -51,6 +57,8 @@ public partial class SettingsViewModel : BaseViewModel
         ThemeLabel = GetLocalizedString("Theme");
         AdditionalSettingsLabel = GetLocalizedString("AdditionalSettings");
         AdditionalOptionsLabel = GetLocalizedString("AdditionalOptions");
+        DashboardText = GetLocalizedString("Dashboard");
+        LogoutText = GetLocalizedString("Logout");
     }
 
     private Language GetCurrentLanguage()
