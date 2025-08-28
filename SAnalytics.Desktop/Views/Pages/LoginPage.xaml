@@ -234,11 +234,11 @@
         <!--  Debug Button (bottom left, only in DEBUG)  -->
         <InfoBar
             Title="{x:Bind ViewModel.DebugButtonText, Mode=OneWay}"
-            Message="{x:Bind ViewModel.DebugModeInfoText, Mode=OneWay}"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
             IsClosable="True"
             IsOpen="True"
+            Message="{x:Bind ViewModel.DebugModeInfoText, Mode=OneWay}"
             Severity="Informational"
             Visibility="{x:Bind ViewModel.ShowDebugButton, Mode=OneWay}">
             <InfoBar.ActionButton>
