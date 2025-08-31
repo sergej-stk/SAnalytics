@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml;
 using SAnalytics.Desktop.Core;
-using SAnalytics.Desktop.Core.Exceptions;
+
 using SAnalytics.Desktop.Services;
 using SAnalytics.Desktop.Views.Pages;
 using System;
@@ -68,8 +68,7 @@ namespace SAnalytics.Desktop
                 // Initialize the application host and DI container
                 await InitializeApplicationAsync();
 
-                // Initialize global exception handling with proper DI
-                WinUI3ExceptionHandler.Initialize(this);
+                
                 
                 // Initialize core services
                 await InitializeCoreServicesAsync();

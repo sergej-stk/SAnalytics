@@ -5,7 +5,7 @@ using SAnalytics.Desktop.ViewModels.Analytics;
 using SAnalytics.Desktop.ViewModels.Auth;
 using SAnalytics.Desktop.ViewModels.Settings;
 using SAnalytics.Desktop.ViewModels.Controls;
-using SAnalytics.Desktop.ViewModels.Dialogs;
+
 using System;
 
 namespace SAnalytics.Desktop.Core;
@@ -39,13 +39,7 @@ public static class ServiceExtensions
         services.AddTransient<SAnalytics.Desktop.Views.Controls.HoverThemeSelector>();
         services.AddTransient<SAnalytics.Desktop.Views.Controls.HoverLanguageSelector>();
         
-        // Factory for ExceptionDialogViewModel since it needs constructor parameters
-        services.AddTransient<Func<Exception, string?, ExceptionDialogViewModel>>(provider =>
-        {
-            var localizationService = provider.GetRequiredService<ILocalizationService>();
-            var logger = provider.GetRequiredService<ILogger<ExceptionDialogViewModel>>();
-            return (exception, userMessage) => new ExceptionDialogViewModel(exception, userMessage, localizationService, logger);
-        });
+        
         
         return services;
     }

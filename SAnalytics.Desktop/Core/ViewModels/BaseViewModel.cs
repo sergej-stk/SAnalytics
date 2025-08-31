@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.Logging;
-using SAnalytics.Desktop.Core.Exceptions;
+
 using SAnalytics.Desktop.Services;
 using System;
 using System.Globalization;
@@ -157,11 +157,7 @@ public abstract partial class BaseViewModel : ObservableObject, IDisposable
         {
             _logger.LogError(ex, "Error executing async operation in {ViewModelType}", GetType().Name);
             
-            // Show detailed exception dialog for specific exception types that need user attention
-            if (ShouldShowExceptionDialog(ex))
-            {
-                _ = Task.Run(async () => await WinUI3ExceptionHandler.ShowExceptionDialogAsync(ex));
-            }
+
             
             SetError(GetLocalizedString("UnexpectedError"));
             return false;
@@ -208,11 +204,7 @@ public abstract partial class BaseViewModel : ObservableObject, IDisposable
         {
             _logger.LogError(ex, "Error executing async operation in {ViewModelType}", GetType().Name);
             
-            // Show detailed exception dialog for specific exception types that need user attention
-            if (ShouldShowExceptionDialog(ex))
-            {
-                _ = Task.Run(async () => await WinUI3ExceptionHandler.ShowExceptionDialogAsync(ex));
-            }
+
             
             SetError(GetLocalizedString("UnexpectedError"));
             return default(T);
