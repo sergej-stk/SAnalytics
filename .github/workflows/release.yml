@@ -28,10 +28,10 @@ jobs:
       uses: nuget/setup-nuget@v2
 
     - name: Restore dependencies
-      run: dotnet restore SAnalytics.Desktop/SAnalytics.Desktop.sln
+      run: dotnet restore SAnalytics.sln
 
     - name: Build Release
-      run: dotnet build SAnalytics.Desktop/SAnalytics.Desktop.sln --configuration Release --no-restore
+      run: dotnet build SAnalytics.sln --configuration Release --no-restore
 
     - name: Publish ${{ matrix.platform }}
       run: dotnet publish SAnalytics.Desktop/SAnalytics.Desktop.csproj --configuration Release --runtime win-${{ matrix.platform }} --self-contained true --output ./publish/${{ matrix.platform }}

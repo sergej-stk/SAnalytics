@@ -30,13 +30,13 @@ jobs:
       uses: nuget/setup-nuget@v2
 
     - name: Restore dependencies
-      run: dotnet restore SAnalytics.Desktop/SAnalytics.Desktop.sln
+      run: dotnet restore SAnalytics.sln
 
     - name: Build
-      run: dotnet build SAnalytics.Desktop/SAnalytics.Desktop.sln --configuration ${{ matrix.configuration }} --no-restore
+      run: dotnet build SAnalytics.sln --configuration ${{ matrix.configuration }} --no-restore
 
     - name: Test
-      run: dotnet test SAnalytics.Desktop/SAnalytics.Desktop.sln --configuration ${{ matrix.configuration }} --no-build --verbosity normal
+      run: dotnet test SAnalytics.sln --configuration ${{ matrix.configuration }} --no-build --verbosity normal
       continue-on-error: true
 
   code-quality:
@@ -51,10 +51,10 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore SAnalytics.Desktop/SAnalytics.Desktop.sln
+      run: dotnet restore SAnalytics.sln
 
     - name: Build
-      run: dotnet build SAnalytics.Desktop/SAnalytics.Desktop.sln --configuration Release --no-restore
+      run: dotnet build SAnalytics.sln --configuration Release --no-restore
 
     - name: Run code analysis
-      run: dotnet build SAnalytics.Desktop/SAnalytics.Desktop.sln --configuration Release --verbosity normal
+      run: dotnet build SAnalytics.sln --configuration Release --verbosity normal
