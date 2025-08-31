@@ -31,13 +31,18 @@ public static class WinUI3ExceptionHandler
             var ex = args.ExceptionObject as Exception;
             if (ex != null)
             {
-                ExceptionLogger.LogException(ex, "AppDomain", args.IsTerminating ? "Terminating" : "");
-                
-                if (!args.IsTerminating)
+                var isTerminating = args.IsTerminating || App.IsShuttingDown;
+                ExceptionLogger.LogException(ex, "AppDomain", isTerminating ? "Terminating" : "");
+
+                if (isTerminating)
+                {
+                    ShowSystemErrorMessage($"A fatal error occurred during shutdown: {ex.Message}");
+                }
+                else
                 {
                     ShowExceptionDialogSafe(ex);
                 }
-                
+
                 UnhandledException?.Invoke(sender, args);
             }
         };
@@ -84,7 +89,14 @@ public static class WinUI3ExceptionHandler
     
     private static async void ShowExceptionDialogSafe(Exception ex)
     {
-        if (!await _dialogSemaphore.WaitAsync(100)) 
+        if (App.IsShuttingDown)
+        {
+            ExceptionLogger.LogException(ex, "Shutdown");
+            ShowSystemErrorMessage($"A non-critical error occurred during shutdown: {ex.Message}");
+            return;
+        }
+
+        if (!await _dialogSemaphore.WaitAsync(100))
             return; // Prevent multiple dialogs
         
         try
@@ -126,7 +138,14 @@ public static class WinUI3ExceptionHandler
     
     public static async Task ShowExceptionDialogAsync(Exception ex, string? userMessage = null)
     {
-        if (!await _dialogSemaphore.WaitAsync(1000)) 
+        if (App.IsShuttingDown)
+        {
+            ExceptionLogger.LogException(ex, "Shutdown");
+            ShowSystemErrorMessage(userMessage ?? $"An error occurred during shutdown: {ex.Message}");
+            return;
+        }
+
+        if (!await _dialogSemaphore.WaitAsync(1000))
             return;
         
         try

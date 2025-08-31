@@ -26,6 +26,7 @@ namespace SAnalytics.Desktop
 
         public MainWindow? MainWindow => _window;
         public IServiceProvider Services => _host?.Services ?? throw new InvalidOperationException("Application not initialized");
+        public static bool IsShuttingDown { get; private set; }
 
         public App()
         {
@@ -76,6 +77,7 @@ namespace SAnalytics.Desktop
                 // Create and activate the main window
                 _window = new MainWindow();
                 _window.Activate();
+                _window.Closed += Window_Closed;
                 
                 _logger?.LogInformation("Application launched successfully");
             }
@@ -135,11 +137,21 @@ namespace SAnalytics.Desktop
             }
         }
 
+        private async void Window_Closed(object sender, WindowEventArgs args)
+        {
+            // Clean up services that hold UI references BEFORE shutting down the host
+            var navigationService = Services.GetService<INavigationService>();
+            navigationService?.Cleanup();
+
+            await ShutdownAsync();
+        }
+
         /// <summary>
         /// Cleans up resources when the application is shutting down.
         /// </summary>
         public async Task ShutdownAsync()
         {
+            IsShuttingDown = true;
             try
             {
                 if (_host != null)

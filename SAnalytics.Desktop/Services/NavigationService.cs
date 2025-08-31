@@ -197,6 +197,15 @@ public class NavigationService : INavigationService
     {
         Navigated?.Invoke(this, args);
     }
+
+    /// <summary>
+    /// Cleans up the reference to the navigation frame.
+    /// </summary>
+    public void Cleanup()
+    {
+        _logger.LogInformation("Cleaning up NavigationService, releasing frame reference.");
+        _frame = null;
+    }
 }
 
 /// <summary>

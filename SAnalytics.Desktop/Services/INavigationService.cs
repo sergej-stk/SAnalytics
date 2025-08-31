@@ -64,6 +64,11 @@ public interface INavigationService
     /// Event raised when navigation occurs.
     /// </summary>
     event EventHandler<NavigationEventArgs>? Navigated;
+
+    /// <summary>
+    /// Cleans up references to UI elements to prevent memory leaks and crashes on shutdown.
+    /// </summary>
+    void Cleanup();
 }
 
 /// <summary>
