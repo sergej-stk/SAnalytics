@@ -74,3 +74,5 @@ nunit-*.xml
 **/.vs/**/CopilotIndices/
 **/.vs/**/FileContentIndex/
 **/.vs/**/DocumentLayout.*
+.gemini/
+gha-creds-*.json
