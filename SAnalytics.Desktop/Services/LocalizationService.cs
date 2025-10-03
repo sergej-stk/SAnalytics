@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Windows.ApplicationModel.Resources;
 using Microsoft.Windows.Globalization;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,7 +16,6 @@ namespace SAnalytics.Desktop.Services;
 /// </summary>
 public class LocalizationService : ILocalizationService
 {
-    private readonly ILogger<LocalizationService> _logger;
     private ResourceLoader _resourceLoader;
     private CultureInfo _currentCulture;
     
@@ -45,19 +45,18 @@ public class LocalizationService : ILocalizationService
 
     public LocalizationService(ILogger<LocalizationService> logger)
     {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _currentCulture = LoadSavedLanguage();
         ApplyCulture(_currentCulture);
         _resourceLoader = new ResourceLoader();
         
-        _logger.LogInformation("LocalizationService initialized with culture {Culture}", _currentCulture.Name);
+        Log.Information("LocalizationService initialized with culture {Culture}", _currentCulture.Name);
     }
 
     public string GetString(string key)
     {
         if (string.IsNullOrEmpty(key))
         {
-            _logger.LogWarning("Attempted to get localized string with null or empty key");
+            Log.Warning("Attempted to get localized string with null or empty key");
             return string.Empty;
         }
 
@@ -70,7 +69,7 @@ public class LocalizationService : ILocalizationService
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Failed to get localized string for key '{Key}'", key);
+            Log.Warning(ex, "Failed to get localized string for key '{Key}'", key);
             return key;
         }
     }
@@ -88,7 +87,7 @@ public class LocalizationService : ILocalizationService
         }
         catch (FormatException ex)
         {
-            _logger.LogWarning(ex, "Failed to format localized string for key '{Key}' with {ArgCount} arguments", key, args.Length);
+            Log.Warning(ex, "Failed to format localized string for key '{Key}' with {ArgCount} arguments", key, args.Length);
             return format;
         }
     }
@@ -97,7 +96,7 @@ public class LocalizationService : ILocalizationService
     {
         if (culture == null)
         {
-            _logger.LogWarning("Attempted to set culture with null value");
+            Log.Warning("Attempted to set culture with null value");
             return false;
         }
 
@@ -106,7 +105,7 @@ public class LocalizationService : ILocalizationService
             // Check if culture is supported
             if (!SupportedCultures.Any(c => c.Name.Equals(culture.Name, StringComparison.OrdinalIgnoreCase)))
             {
-                _logger.LogWarning("Culture {Culture} is not supported, falling back to English", culture.Name);
+                Log.Warning("Culture {Culture} is not supported, falling back to English", culture.Name);
                 culture = SupportedCultures.First(c => c.Name == "en-US");
             }
 
@@ -117,12 +116,12 @@ public class LocalizationService : ILocalizationService
             // Force reload of ResourceLoader
             _resourceLoader = new ResourceLoader();
             
-            _logger.LogInformation("Culture changed to {Culture}", culture.Name);
+            Log.Information("Culture changed to {Culture}", culture.Name);
             return true;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to set culture to {Culture}", culture.Name);
+            Log.Error(ex, "Failed to set culture to {Culture}", culture.Name);
             return false;
         }
     }
@@ -131,7 +130,7 @@ public class LocalizationService : ILocalizationService
     {
         if (string.IsNullOrEmpty(cultureCode))
         {
-            _logger.LogWarning("Attempted to set culture with null or empty culture code");
+            Log.Warning("Attempted to set culture with null or empty culture code");
             return false;
         }
 
@@ -142,7 +141,7 @@ public class LocalizationService : ILocalizationService
         }
         catch (CultureNotFoundException ex)
         {
-            _logger.LogWarning(ex, "Culture '{CultureCode}' not found, falling back to English", cultureCode);
+            Log.Warning(ex, "Culture '{CultureCode}' not found, falling back to English", cultureCode);
             return SetCulture(SupportedCultures.First(c => c.Name == "en-US"));
         }
     }
@@ -168,11 +167,11 @@ public class LocalizationService : ILocalizationService
         {
             // Set the primary language override for WinUI 3
             ApplicationLanguages.PrimaryLanguageOverride = culture.Name;
-            _logger.LogDebug("Applied culture {Culture} to ApplicationLanguages", culture.Name);
+            Log.Debug("Applied culture {Culture} to ApplicationLanguages", culture.Name);
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Failed to apply culture {Culture}", culture.Name);
+            Log.Warning(ex, "Failed to apply culture {Culture}", culture.Name);
         }
     }
 
@@ -184,13 +183,13 @@ public class LocalizationService : ILocalizationService
             if (settings.Values.TryGetValue("AppLanguage", out var savedLanguage) && savedLanguage is string langCode)
             {
                 var culture = CultureInfo.GetCultureInfo(langCode);
-                _logger.LogDebug("Loaded saved language {Culture}", culture.Name);
+                Log.Debug("Loaded saved language {Culture}", culture.Name);
                 return culture;
             }
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Failed to load saved language, using default");
+            Log.Warning(ex, "Failed to load saved language, using default");
         }
 
         // Default to system language or English if not supported
@@ -200,7 +199,7 @@ public class LocalizationService : ILocalizationService
             defaultCulture = SupportedCultures.First(c => c.Name == "en-US");
         }
         
-        _logger.LogDebug("Using default culture {Culture}", defaultCulture.Name);
+        Log.Debug("Using default culture {Culture}", defaultCulture.Name);
         return defaultCulture;
     }
 
@@ -210,11 +209,11 @@ public class LocalizationService : ILocalizationService
         {
             var settings = ApplicationData.Current.LocalSettings;
             settings.Values["AppLanguage"] = culture.Name;
-            _logger.LogDebug("Saved language preference {Culture}", culture.Name);
+            Log.Debug("Saved language preference {Culture}", culture.Name);
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Failed to save language preference {Culture}", culture.Name);
+            Log.Warning(ex, "Failed to save language preference {Culture}", culture.Name);
         }
     }
 }

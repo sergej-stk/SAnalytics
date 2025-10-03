@@ -1,5 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using SAnalytics.Desktop.Services;
 using SAnalytics.Desktop.ViewModels.Analytics;
 using SAnalytics.Desktop.ViewModels.Auth;
@@ -29,15 +28,15 @@ public static class ServiceExtensions
         services.AddTransient<ThemeSelectorViewModel>();
         
         // Register Pages
-        services.AddTransient<SAnalytics.Desktop.Views.Pages.LoginPage>();
-        services.AddTransient<SAnalytics.Desktop.Views.Pages.DashboardPage>();
-        services.AddTransient<SAnalytics.Desktop.Views.Pages.SettingsPage>();
+        services.AddTransient<Views.Pages.LoginPage>();
+        services.AddTransient<Views.Pages.DashboardPage>();
+        services.AddTransient<Views.Pages.SettingsPage>();
         
         // Register Controls
-        services.AddTransient<SAnalytics.Desktop.Views.Controls.ThemeSelector>();
-        services.AddTransient<SAnalytics.Desktop.Views.Controls.LanguageSelector>();
-        services.AddTransient<SAnalytics.Desktop.Views.Controls.HoverThemeSelector>();
-        services.AddTransient<SAnalytics.Desktop.Views.Controls.HoverLanguageSelector>();
+        services.AddTransient<Views.Controls.ThemeSelector>();
+        services.AddTransient<Views.Controls.LanguageSelector>();
+        services.AddTransient<Views.Controls.HoverThemeSelector>();
+        services.AddTransient<Views.Controls.HoverLanguageSelector>();
         
         
         
@@ -67,38 +66,7 @@ public static class ServiceExtensions
         services.AddSingleton<IThemeService, ThemeService>();
         
         return services;
-    }
-    
-    /// <summary>
-    /// Adds logging services with structured logging configuration.
-    /// </summary>
-    /// <param name="services">The service collection.</param>
-    /// <returns>The service collection for chaining.</returns>
-    public static IServiceCollection AddApplicationLogging(this IServiceCollection services)
-    {
-        services.AddLogging(builder =>
-        {
-            builder.ClearProviders();
-            
-            // Add console logging for development
-#if DEBUG
-            builder.AddConsole();
-            builder.SetMinimumLevel(LogLevel.Debug);
-#else
-            builder.SetMinimumLevel(LogLevel.Information);
-#endif
-            
-            // Add debug output for development
-            builder.AddDebug();
-            
-            // Configure log filtering
-            builder.AddFilter("Microsoft", LogLevel.Warning);
-            builder.AddFilter("System", LogLevel.Warning);
-            builder.AddFilter("SAnalytics", LogLevel.Information);
-        });
-        
-        return services;
-    }
+    } 
     
     /// <summary>
     /// Configures application-wide options and settings.
@@ -122,7 +90,6 @@ public static class ServiceExtensions
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         return services
-            .AddApplicationLogging()
             .AddCoreServices()
             .AddViewModels()
             .ConfigureApplicationOptions();

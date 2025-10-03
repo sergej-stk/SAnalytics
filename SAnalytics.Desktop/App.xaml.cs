@@ -1,169 +1,128 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml;
 using SAnalytics.Desktop.Core;
-
 using SAnalytics.Desktop.Services;
-using SAnalytics.Desktop.Views.Pages;
+using Serilog;
 using System;
 using System.Threading.Tasks;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+namespace SAnalytics.Desktop;
 
-namespace SAnalytics.Desktop
+public partial class App : Application
 {
-    /// <summary>
-    /// Provides application-specific behavior to supplement the default Application class.
-    /// Uses proper dependency injection and async initialization patterns.
-    /// </summary>
-    public partial class App : Application
+    private MainWindow? _window;
+    private IHost? _host;
+
+    public MainWindow? MainWindow => 
+        _window;
+
+    public IServiceProvider Services => _host?.Services ?? 
+        throw new InvalidOperationException("Application not initialized");
+
+    public App()
     {
-        private MainWindow? _window;
-        private IHost? _host;
-        private ILogger<App>? _logger;
+        InitializeLogging();
+        InitializeComponent();
 
-        public MainWindow? MainWindow => _window;
-        public IServiceProvider Services => _host?.Services ?? throw new InvalidOperationException("Application not initialized");
-        public static bool IsShuttingDown { get; private set; }
-
-        public App()
+        UnhandledException += (_, e) =>
         {
-            InitializeComponent();
+            Log.Fatal(e.Exception, "An unhandled exception occured.");
+            Log.CloseAndFlush();
+        };
+    }
+
+    protected override async void OnLaunched(LaunchActivatedEventArgs args)
+    {
+        try
+        {
+            await InitializeHostAsync();
+            await InitializeCoreServicesAsync();
+
+            _window = new MainWindow();
+            _window.Activate();
+            _window.Closed += async (_, _) => await ShutdownAsync();
+
+            Log.Debug("Application launched successfully");
         }
-
-        private async Task InitializeApplicationAsync()
+        catch (Exception ex)
         {
-            try
-            {
-                _host = Host.CreateDefaultBuilder()
-                    .ConfigureServices(ConfigureServices)
-                    .Build();
-
-                await _host.StartAsync();
-                
-                _logger = _host.Services.GetRequiredService<ILogger<App>>();
-                _logger.LogInformation("Application host initialized successfully");
-            }
-            catch (Exception ex)
-            {
-                // Fall back to console logging if DI logger isn't available
-                System.Diagnostics.Debug.WriteLine($"Failed to initialize application: {ex}");
-                throw;
-            }
-        }
-
-        private static void ConfigureServices(IServiceCollection services)
-        {
-            // Use the comprehensive service registration from ServiceExtensions
-            services.AddApplicationServices();
-        }
-
-
-        protected override async void OnLaunched(LaunchActivatedEventArgs args)
-        {
-            try
-            {
-                // Initialize the application host and DI container
-                await InitializeApplicationAsync();
-
-                
-                
-                // Initialize core services
-                await InitializeCoreServicesAsync();
-                
-                // Create and activate the main window
-                _window = new MainWindow();
-                _window.Activate();
-                _window.Closed += Window_Closed;
-                
-                _logger?.LogInformation("Application launched successfully");
-            }
-            catch (Exception ex)
-            {
-                // Critical failure - log and show error dialog if possible
-                System.Diagnostics.Debug.WriteLine($"Critical application launch failure: {ex}");
-                
-                // Try to show a basic error message to the user
-                try
-                {
-                    var errorWindow = new MainWindow();
-                    // Could show a critical error dialog here
-                    errorWindow.Activate();
-                }
-                catch
-                {
-                    // Ultimate fallback - just crash
-                    throw;
-                }
-            }
-        }
-
-        private async Task InitializeCoreServicesAsync()
-        {
-            try
-            {
-                if (_host?.Services == null)
-                    throw new InvalidOperationException("Host services not initialized");
-
-                // Initialize theme service
-                var themeService = _host.Services.GetRequiredService<IThemeService>();
-                themeService.Initialize();
-                _logger?.LogDebug("Theme service initialized");
-                
-                // Initialize configuration service and load saved settings
-                var configService = _host.Services.GetRequiredService<IAppConfigurationService>();
-                await configService.ReloadAsync();
-                _logger?.LogDebug("Configuration service initialized");
-                
-                // Initialize authentication service for auto-login
-                var authService = _host.Services.GetRequiredService<IAuthenticationService>();
-                var autoLoginResult = await authService.TryAutoAuthenticateAsync();
-                if (autoLoginResult.IsSuccess)
-                {
-                    _logger?.LogInformation("User auto-authenticated successfully");
-                }
-                else
-                {
-                    _logger?.LogDebug("Auto-authentication not available or failed");
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger?.LogError(ex, "Error initializing core services");
-                throw;
-            }
-        }
-
-        private async void Window_Closed(object sender, WindowEventArgs args)
-        {
-            // Clean up services that hold UI references BEFORE shutting down the host
-            var navigationService = Services.GetService<INavigationService>();
-            navigationService?.Cleanup();
-
+            Log.Fatal(ex, "Critical application launch failure.");
             await ShutdownAsync();
-        }
-
-        /// <summary>
-        /// Cleans up resources when the application is shutting down.
-        /// </summary>
-        public async Task ShutdownAsync()
-        {
-            IsShuttingDown = true;
-            try
-            {
-                if (_host != null)
-                {
-                    await _host.StopAsync(TimeSpan.FromSeconds(5));
-                    _host.Dispose();
-                    _logger?.LogInformation("Application shut down successfully");
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger?.LogError(ex, "Error during application shutdown");
-            }
+            throw;
         }
     }
+
+    private Task InitializeHostAsync()
+    {
+        _host = Host.CreateDefaultBuilder()
+            .UseSerilog()
+            .ConfigureServices((_, services) => services.AddApplicationServices())
+            .Build();
+
+        return _host.StartAsync();
+    }
+
+    private async Task InitializeCoreServicesAsync()
+    {
+        try
+        {
+            if (_host?.Services == null)
+                throw new InvalidOperationException("Host services not initialized");
+
+            var themeService = _host.Services.GetRequiredService<IThemeService>();
+            themeService.Initialize();
+            Log.Debug("Theme service initialized");
+            
+            var configService = _host.Services.GetRequiredService<IAppConfigurationService>();
+            await configService.ReloadAsync();
+            Log.Debug("Configuration service initialized");
+            
+            var authService = _host.Services.GetRequiredService<IAuthenticationService>();
+            var autoLoginResult = await authService.TryAutoAuthenticateAsync();
+            if (autoLoginResult.IsSuccess)
+            {
+                Log.Information("User auto-authenticated successfully");
+            }
+            else
+            {
+                Log.Debug("Auto-authentication not available or failed");
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Error initializing core services");
+            throw;
+        }
+    }
+
+    public async Task ShutdownAsync()
+    {
+        try
+        {
+            if (_host is IAsyncDisposable asyncDisposable)
+                await asyncDisposable.DisposeAsync();
+            else
+                _host?.Dispose();
+
+            Log.Information("Application shut down successfully");
+
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Error during application shutdown");
+        }
+        finally
+        {
+            Log.CloseAndFlush();
+        }
+    }
+
+    private void InitializeLogging() =>
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Debug()
+            .Enrich.FromLogContext()
+            .WriteTo.Debug()
+            .WriteTo.Console()
+            .CreateLogger();
 }

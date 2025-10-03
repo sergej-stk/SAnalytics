@@ -1,8 +1,8 @@
 using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading;
@@ -17,7 +17,6 @@ namespace SAnalytics.Desktop.Services;
 /// </summary>
 public class AppConfigurationService : IAppConfigurationService
 {
-    private readonly ILogger<AppConfigurationService> _logger;
     private readonly ConcurrentDictionary<string, object?> _configCache;
     private readonly SemaphoreSlim _semaphore;
     private readonly JsonSerializerOptions _jsonOptions;
@@ -30,9 +29,8 @@ public class AppConfigurationService : IAppConfigurationService
     
     public event EventHandler<ConfigurationChangedEventArgs>? ConfigurationChanged;
 
-    public AppConfigurationService(ILogger<AppConfigurationService> logger)
+    public AppConfigurationService()
     {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _configCache = new ConcurrentDictionary<string, object?>();
         _semaphore = new SemaphoreSlim(1, 1);
         
@@ -50,7 +48,7 @@ public class AppConfigurationService : IAppConfigurationService
     {
         if (string.IsNullOrEmpty(key))
         {
-            _logger.LogWarning("Attempted to get configuration value with null or empty key");
+            Log.Warning("Attempted to get configuration value with null or empty key");
             return defaultValue;
         }
 
@@ -71,12 +69,12 @@ public class AppConfigurationService : IAppConfigurationService
                 return ConvertValue<T>(cachedValue) ?? defaultValue;
             }
 
-            _logger.LogDebug("Configuration key '{Key}' not found, returning default value", key);
+            Log.Debug("Configuration key '{Key}' not found, returning default value", key);
             return defaultValue;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error getting configuration value for key '{Key}'", key);
+            Log.Error(ex, "Error getting configuration value for key '{Key}'", key);
             return defaultValue;
         }
     }
@@ -85,7 +83,7 @@ public class AppConfigurationService : IAppConfigurationService
     {
         if (string.IsNullOrEmpty(key))
         {
-            _logger.LogWarning("Attempted to get configuration value with null or empty key");
+            Log.Warning("Attempted to get configuration value with null or empty key");
             return defaultValue;
         }
 
@@ -107,12 +105,12 @@ public class AppConfigurationService : IAppConfigurationService
                 return ConvertCachedValue<T>(cachedValue, defaultValue);
             }
 
-            _logger.LogDebug("Configuration key '{Key}' not found after loading, returning default value", key);
+            Log.Debug("Configuration key '{Key}' not found after loading, returning default value", key);
             return defaultValue;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error getting configuration value asynchronously for key '{Key}'", key);
+            Log.Error(ex, "Error getting configuration value asynchronously for key '{Key}'", key);
             return defaultValue;
         }
         finally
@@ -125,7 +123,7 @@ public class AppConfigurationService : IAppConfigurationService
     {
         if (string.IsNullOrEmpty(key))
         {
-            _logger.LogWarning("Attempted to set configuration value with null or empty key");
+            Log.Warning("Attempted to set configuration value with null or empty key");
             return;
         }
 
@@ -144,11 +142,11 @@ public class AppConfigurationService : IAppConfigurationService
                 NewValue = value
             });
             
-            _logger.LogDebug("Configuration value set for key '{Key}'", key);
+            Log.Debug("Configuration value set for key '{Key}'", key);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error setting configuration value for key '{Key}'", key);
+            Log.Error(ex, "Error setting configuration value for key '{Key}'", key);
             throw;
         }
         finally
@@ -166,7 +164,7 @@ public class AppConfigurationService : IAppConfigurationService
     {
         if (string.IsNullOrEmpty(key))
         {
-            _logger.LogWarning("Attempted to remove configuration key with null or empty key");
+            Log.Warning("Attempted to remove configuration key with null or empty key");
             return;
         }
 
@@ -184,12 +182,12 @@ public class AppConfigurationService : IAppConfigurationService
                     NewValue = null
                 });
                 
-                _logger.LogDebug("Configuration key '{Key}' removed", key);
+                Log.Debug("Configuration key '{Key}' removed", key);
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error removing configuration key '{Key}'", key);
+            Log.Error(ex, "Error removing configuration key '{Key}'", key);
             throw;
         }
         finally
@@ -206,11 +204,11 @@ public class AppConfigurationService : IAppConfigurationService
             _configCache.Clear();
             await SaveConfigurationAsync();
             
-            _logger.LogInformation("All configuration values cleared");
+            Log.Information("All configuration values cleared");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error clearing all configuration values");
+            Log.Error(ex, "Error clearing all configuration values");
             throw;
         }
         finally
@@ -227,11 +225,11 @@ public class AppConfigurationService : IAppConfigurationService
             _configCache.Clear();
             await LoadConfigurationAsync();
             
-            _logger.LogInformation("Configuration reloaded from storage");
+            Log.Information("Configuration reloaded from storage");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error reloading configuration");
+            Log.Error(ex, "Error reloading configuration");
             throw;
         }
         finally
@@ -256,12 +254,12 @@ public class AppConfigurationService : IAppConfigurationService
             IsDebugMode = false;
 #endif
             
-            _logger.LogInformation("App info initialized: {AppName} v{AppVersion}, Debug: {IsDebug}", 
+            Log.Information("App info initialized: {AppName} v{AppVersion}, Debug: {IsDebug}", 
                 AppName, AppVersion, IsDebugMode);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error initializing app info");
+            Log.Error(ex, "Error initializing app info");
             
             AppName = "SAnalytics";
             AppVersion = "1.0.0.0";
@@ -278,7 +276,7 @@ public class AppConfigurationService : IAppConfigurationService
             
             if (configFile == null)
             {
-                _logger.LogInformation("Configuration file not found, using defaults");
+                Log.Information("Configuration file not found, using defaults");
                 await InitializeDefaultConfigurationAsync();
                 return;
             }
@@ -287,7 +285,7 @@ public class AppConfigurationService : IAppConfigurationService
             
             if (string.IsNullOrWhiteSpace(jsonContent))
             {
-                _logger.LogWarning("Configuration file is empty, using defaults");
+                Log.Warning("Configuration file is empty, using defaults");
                 await InitializeDefaultConfigurationAsync();
                 return;
             }
@@ -301,12 +299,12 @@ public class AppConfigurationService : IAppConfigurationService
                     _configCache[kvp.Key] = kvp.Value;
                 }
                 
-                _logger.LogInformation("Configuration loaded successfully with {Count} keys", configData.Count);
+                Log.Information("Configuration loaded successfully with {Count} keys", configData.Count);
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error loading configuration, using defaults");
+            Log.Error(ex, "Error loading configuration, using defaults");
             await InitializeDefaultConfigurationAsync();
         }
     }
@@ -329,11 +327,11 @@ public class AppConfigurationService : IAppConfigurationService
             
             await FileIO.WriteTextAsync(configFile, jsonContent);
             
-            _logger.LogDebug("Configuration saved successfully with {Count} keys", configData.Count);
+            Log.Debug("Configuration saved successfully with {Count} keys", configData.Count);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error saving configuration");
+            Log.Error(ex, "Error saving configuration");
             throw;
         }
     }
@@ -354,11 +352,11 @@ public class AppConfigurationService : IAppConfigurationService
             
             await SaveConfigurationAsync();
             
-            _logger.LogInformation("Default configuration initialized");
+            Log.Information("Default configuration initialized");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error initializing default configuration");
+            Log.Error(ex, "Error initializing default configuration");
         }
     }
 
@@ -387,7 +385,7 @@ public class AppConfigurationService : IAppConfigurationService
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Error converting value of type {ValueType} to {TargetType}", 
+            Log.Warning(ex, "Error converting value of type {ValueType} to {TargetType}", 
                 value.GetType().Name, typeof(T).Name);
             return default(T);
         }
@@ -401,7 +399,7 @@ public class AppConfigurationService : IAppConfigurationService
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Error deserializing JsonElement to {TargetType}", typeof(T).Name);
+            Log.Warning(ex, "Error deserializing JsonElement to {TargetType}", typeof(T).Name);
             return defaultValue;
         }
     }

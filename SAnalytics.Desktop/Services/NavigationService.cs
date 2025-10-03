@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using SAnalytics.Desktop.Views.Pages;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,14 +14,12 @@ namespace SAnalytics.Desktop.Services;
 /// </summary>
 public class NavigationService : INavigationService
 {
-    private readonly ILogger<NavigationService> _logger;
     private readonly Dictionary<string, Type> _pageRegistry;
     private Frame? _frame;
 
     public NavigationService(ILogger<NavigationService> logger)
     {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _pageRegistry = new Dictionary<string, Type>();
+        _pageRegistry = [];
         
         RegisterPages();
     }
@@ -33,7 +31,7 @@ public class NavigationService : INavigationService
     public void SetFrame(Frame frame)
     {
         _frame = frame ?? throw new ArgumentNullException(nameof(frame));
-        _logger.LogInformation("Navigation frame set successfully");
+        Log.Information("Navigation frame set successfully");
     }
 
     public bool CanGoBack => _frame?.CanGoBack ?? false;
@@ -51,7 +49,7 @@ public class NavigationService : INavigationService
     {
         if (_frame == null)
         {
-            _logger.LogError("Navigation frame not set. Call SetFrame() first.");
+            Log.Error("Navigation frame not set. Call SetFrame() first.");
             return false;
         }
 
@@ -62,11 +60,11 @@ public class NavigationService : INavigationService
             // Avoid navigating to the same page
             if (currentPageType == pageType)
             {
-                _logger.LogDebug("Already on target page {PageType}", pageType.Name);
+                Log.Debug("Already on target page {PageType}", pageType.Name);
                 return true;
             }
 
-            _logger.LogInformation("Navigating from {SourcePage} to {TargetPage}", 
+            Log.Information("Navigating from {SourcePage} to {TargetPage}", 
                 currentPageType?.Name ?? "None", pageType.Name);
 
             var result = _frame.Navigate(pageType, parameter);
@@ -82,11 +80,11 @@ public class NavigationService : INavigationService
                     IsSuccessful = true
                 });
                 
-                _logger.LogInformation("Navigation to {PageType} successful", pageType.Name);
+                Log.Information("Navigation to {PageType} successful", pageType.Name);
             }
             else
             {
-                _logger.LogWarning("Navigation to {PageType} failed", pageType.Name);
+                Log.Warning("Navigation to {PageType} failed", pageType.Name);
                 
                 OnNavigated(new NavigationEventArgs(pageType)
                 {
@@ -101,7 +99,7 @@ public class NavigationService : INavigationService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error navigating to {PageType}", pageType.Name);
+            Log.Error(ex, "Error navigating to {PageType}", pageType.Name);
             
             OnNavigated(new NavigationEventArgs(pageType)
             {
@@ -119,7 +117,7 @@ public class NavigationService : INavigationService
     {
         if (!_pageRegistry.TryGetValue(pageName, out var pageType))
         {
-            _logger.LogError("Page with name '{PageName}' not found in registry", pageName);
+            Log.Error("Page with name '{PageName}' not found in registry", pageName);
             return Task.FromResult(false);
         }
 
@@ -130,13 +128,13 @@ public class NavigationService : INavigationService
     {
         if (_frame == null)
         {
-            _logger.LogError("Navigation frame not set. Call SetFrame() first.");
+            Log.Error("Navigation frame not set. Call SetFrame() first.");
             return false;
         }
 
         if (!_frame.CanGoBack)
         {
-            _logger.LogDebug("Cannot go back - no previous page in navigation stack");
+            Log.Debug("Cannot go back - no previous page in navigation stack");
             return false;
         }
 
@@ -147,12 +145,12 @@ public class NavigationService : INavigationService
             
             await Task.CompletedTask; // For potential future async operations
             
-            _logger.LogInformation("Navigated back from {PageType}", currentPageType?.Name ?? "Unknown");
+            Log.Information("Navigated back from {PageType}", currentPageType?.Name ?? "Unknown");
             return true;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error navigating back");
+            Log.Error(ex, "Error navigating back");
             return false;
         }
     }
@@ -161,18 +159,18 @@ public class NavigationService : INavigationService
     {
         if (_frame == null)
         {
-            _logger.LogWarning("Navigation frame not set when trying to clear back stack");
+            Log.Warning("Navigation frame not set when trying to clear back stack");
             return;
         }
 
         try
         {
             _frame.BackStack.Clear();
-            _logger.LogInformation("Navigation back stack cleared");
+            Log.Information("Navigation back stack cleared");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error clearing navigation back stack");
+            Log.Error(ex, "Error clearing navigation back stack");
         }
     }
 
@@ -186,7 +184,7 @@ public class NavigationService : INavigationService
         _pageRegistry["Dashboard"] = typeof(DashboardPage);
         _pageRegistry["Settings"] = typeof(SettingsPage);
         
-        _logger.LogInformation("Registered {PageCount} pages for navigation", _pageRegistry.Count);
+        Log.Information("Registered {PageCount} pages for navigation", _pageRegistry.Count);
     }
 
     /// <summary>
@@ -203,7 +201,7 @@ public class NavigationService : INavigationService
     /// </summary>
     public void Cleanup()
     {
-        _logger.LogInformation("Cleaning up NavigationService, releasing frame reference.");
+        Log.Information("Cleaning up NavigationService, releasing frame reference.");
         _frame = null;
     }
 }

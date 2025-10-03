@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml;
 using SAnalytics.Desktop.Core.ViewModels;
 using SAnalytics.Desktop.Services;
 using SAnalytics.Desktop.Views.Pages;
+using Serilog;
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -51,10 +52,9 @@ public partial class DashboardViewModel : BaseViewModel
 
     public DashboardViewModel(
         ILocalizationService localizationService,
-        ILogger<DashboardViewModel> logger,
         IAuthenticationService authenticationService,
         INavigationService navigationService)
-        : base(localizationService, logger)
+        : base(localizationService)
     {
         _authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
         _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
@@ -101,7 +101,7 @@ public partial class DashboardViewModel : BaseViewModel
             RecordCount = 1000;
             LastUpdated = DateTime.Now.ToString("dd.MM.yyyy HH:mm");
             
-            Logger.LogInformation("Dashboard data loaded: {DatasetName} with {RecordCount} records", DatasetName, RecordCount);
+            Log.Information("Dashboard data loaded: {DatasetName} with {RecordCount} records", DatasetName, RecordCount);
         }, GetLocalizedString("LoadingData"));
     }
     
@@ -117,7 +117,7 @@ public partial class DashboardViewModel : BaseViewModel
         await ExecuteWithBusyStateAsync(async (cancellationToken) =>
         {
             await _authenticationService.SignOutAsync(cancellationToken);
-            Logger.LogInformation("User logged out from dashboard");
+            Log.Information("User logged out from dashboard");
             
             // Navigate to login page
             await _navigationService.NavigateToAsync<LoginPage>();

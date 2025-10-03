@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.Logging;
 
 using SAnalytics.Desktop.Services;
+using Serilog;
 using System;
 using System.Globalization;
 using System.Threading;
@@ -17,7 +18,6 @@ namespace SAnalytics.Desktop.Core.ViewModels;
 public abstract partial class BaseViewModel : ObservableObject, IDisposable
 {
     private readonly ILocalizationService _localizationService;
-    private readonly ILogger _logger;
     private bool _disposed;
 
     [ObservableProperty]
@@ -37,12 +37,9 @@ public abstract partial class BaseViewModel : ObservableObject, IDisposable
     /// </summary>
     /// <param name="localizationService">The localization service.</param>
     /// <param name="logger">The logger instance.</param>
-    protected BaseViewModel(
-        ILocalizationService localizationService, 
-        ILogger logger)
+    protected BaseViewModel(ILocalizationService localizationService)
     {
         _localizationService = localizationService ?? throw new ArgumentNullException(nameof(localizationService));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         
         // Subscribe to language changes
         _localizationService.LanguageChanged += OnLanguageChanged;
@@ -50,7 +47,7 @@ public abstract partial class BaseViewModel : ObservableObject, IDisposable
         // Initialize localized strings
         OnLanguageChanged(_localizationService, _localizationService.CurrentCulture);
         
-        _logger.LogDebug("ViewModel {ViewModelType} initialized", GetType().Name);
+        Log.Debug("ViewModel {ViewModelType} initialized", GetType().Name);
     }
 
     /// <summary>
@@ -62,7 +59,7 @@ public abstract partial class BaseViewModel : ObservableObject, IDisposable
     protected virtual void OnLanguageChanged(object? sender, CultureInfo culture)
     {
         // Override in derived classes to update localized properties
-        _logger.LogDebug("Language changed to {Culture} for {ViewModelType}", culture.Name, GetType().Name);
+        Log.Debug("Language changed to {Culture} for {ViewModelType}", culture.Name, GetType().Name);
     }
 
     /// <summary>
@@ -74,7 +71,7 @@ public abstract partial class BaseViewModel : ObservableObject, IDisposable
     {
         if (string.IsNullOrEmpty(key))
         {
-            _logger.LogWarning("Attempted to get localized string with null or empty key");
+            Log.Warning("Attempted to get localized string with null or empty key");
             return string.Empty;
         }
         
@@ -92,7 +89,7 @@ public abstract partial class BaseViewModel : ObservableObject, IDisposable
         
         if (!string.IsNullOrEmpty(message))
         {
-            _logger.LogInformation("ViewModel {ViewModelType} busy state: {IsBusy}, Message: {Message}", 
+            Log.Information("ViewModel {ViewModelType} busy state: {IsBusy}, Message: {Message}", 
                 GetType().Name, isBusy, message);
         }
     }
@@ -109,7 +106,7 @@ public abstract partial class BaseViewModel : ObservableObject, IDisposable
         
         if (logError && HasErrors)
         {
-            _logger.LogError("ViewModel {ViewModelType} error: {ErrorMessage}", GetType().Name, errorMessage);
+            Log.Error("ViewModel {ViewModelType} error: {ErrorMessage}", GetType().Name, errorMessage);
         }
     }
 
@@ -144,21 +141,18 @@ public abstract partial class BaseViewModel : ObservableObject, IDisposable
             
             await operation(cancellationToken);
             
-            _logger.LogDebug("Async operation completed successfully in {ViewModelType}", GetType().Name);
+            Log.Debug("Async operation completed successfully in {ViewModelType}", GetType().Name);
             return true;
         }
         catch (OperationCanceledException)
         {
-            _logger.LogInformation("Operation cancelled in {ViewModelType}", GetType().Name);
+            Log.Information("Operation cancelled in {ViewModelType}", GetType().Name);
             SetError(GetLocalizedString("OperationCancelled"));
             return false;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error executing async operation in {ViewModelType}", GetType().Name);
-            
-
-            
+            Log.Error(ex, "Error executing async operation in {ViewModelType}", GetType().Name);                      
             SetError(GetLocalizedString("UnexpectedError"));
             return false;
         }
@@ -191,21 +185,18 @@ public abstract partial class BaseViewModel : ObservableObject, IDisposable
             
             var result = await operation(cancellationToken);
             
-            _logger.LogDebug("Async operation completed successfully in {ViewModelType}", GetType().Name);
+            Log.Debug("Async operation completed successfully in {ViewModelType}", GetType().Name);
             return result;
         }
         catch (OperationCanceledException)
         {
-            _logger.LogInformation("Operation cancelled in {ViewModelType}", GetType().Name);
+            Log.Information("Operation cancelled in {ViewModelType}", GetType().Name);
             SetError(GetLocalizedString("OperationCancelled"));
             return default(T);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error executing async operation in {ViewModelType}", GetType().Name);
-            
-
-            
+            Log.Error(ex, "Error executing async operation in {ViewModelType}", GetType().Name);                     
             SetError(GetLocalizedString("UnexpectedError"));
             return default(T);
         }
@@ -214,11 +205,6 @@ public abstract partial class BaseViewModel : ObservableObject, IDisposable
             SetBusyState(false);
         }
     }
-
-    /// <summary>
-    /// Gets the logger instance for this ViewModel.
-    /// </summary>
-    protected ILogger Logger => _logger;
 
     /// <summary>
     /// Gets the localization service instance.
@@ -261,7 +247,7 @@ public abstract partial class BaseViewModel : ObservableObject, IDisposable
                 _localizationService.LanguageChanged -= OnLanguageChanged;
             }
             
-            _logger.LogDebug("ViewModel {ViewModelType} disposed", GetType().Name);
+            Log.Debug("ViewModel {ViewModelType} disposed", GetType().Name);
             _disposed = true;
         }
     }

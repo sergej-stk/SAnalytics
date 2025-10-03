@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
@@ -14,7 +15,6 @@ namespace SAnalytics.Desktop.Services;
 /// </summary>
 public class AuthenticationService : IAuthenticationService
 {
-    private readonly ILogger<AuthenticationService> _logger;
     private readonly IAppConfigurationService _configurationService;
     private IUserPrincipal? _currentUser;
     private string? _authToken;
@@ -24,7 +24,6 @@ public class AuthenticationService : IAuthenticationService
         ILogger<AuthenticationService> logger,
         IAppConfigurationService configurationService)
     {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _configurationService = configurationService ?? throw new ArgumentNullException(nameof(configurationService));
     }
 
@@ -38,19 +37,19 @@ public class AuthenticationService : IAuthenticationService
     {
         if (string.IsNullOrWhiteSpace(username))
         {
-            _logger.LogWarning("Authentication attempted with empty username");
+            Log.Warning("Authentication attempted with empty username");
             return AuthenticationResult.Failure(AuthenticationError.InvalidCredentials, "Username is required");
         }
 
         if (string.IsNullOrWhiteSpace(password))
         {
-            _logger.LogWarning("Authentication attempted with empty password for user {Username}", username);
+            Log.Warning("Authentication attempted with empty password for user {Username}", username);
             return AuthenticationResult.Failure(AuthenticationError.InvalidCredentials, "Password is required");
         }
 
         try
         {
-            _logger.LogInformation("Authenticating user {Username}", username);
+            Log.Information("Authenticating user {Username}", username);
 
             // Simulate async authentication process
             await Task.Delay(500, cancellationToken); // Simulate network delay
@@ -61,14 +60,14 @@ public class AuthenticationService : IAuthenticationService
             
             if (!authResult.IsSuccess)
             {
-                _logger.LogWarning("Authentication failed for user {Username}: {Error}", username, authResult.ErrorMessage);
+                Log.Warning("Authentication failed for user {Username}: {Error}", username, authResult.ErrorMessage);
                 return authResult;
             }
 
             // Ensure user is not null
             if (authResult.User == null)
             {
-                _logger.LogError("Authentication succeeded but user is null for {Username}", username);
+                Log.Error("Authentication succeeded but user is null for {Username}", username);
                 return AuthenticationResult.Failure(AuthenticationError.UnknownError, "Authentication failed - invalid user data");
             }
 
@@ -104,18 +103,18 @@ public class AuthenticationService : IAuthenticationService
                 Reason = "User authenticated successfully"
             });
 
-            _logger.LogInformation("User {Username} authenticated successfully", username);
+            Log.Information("User {Username} authenticated successfully", username);
             
             return AuthenticationResult.Success(_currentUser, token, expiresAt);
         }
         catch (OperationCanceledException)
         {
-            _logger.LogInformation("Authentication cancelled for user {Username}", username);
+            Log.Information("Authentication cancelled for user {Username}", username);
             return AuthenticationResult.Failure(AuthenticationError.UnknownError, "Operation was cancelled");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error during authentication for user {Username}", username);
+            Log.Error(ex, "Error during authentication for user {Username}", username);
             return AuthenticationResult.Failure(AuthenticationError.UnknownError, "An unexpected error occurred during authentication");
         }
     }
@@ -128,7 +127,7 @@ public class AuthenticationService : IAuthenticationService
             
             if (!rememberLogin)
             {
-                _logger.LogDebug("Auto-authentication skipped - remember me not enabled");
+                Log.Debug("Auto-authentication skipped - remember me not enabled");
                 return AuthenticationResult.Failure(AuthenticationError.InvalidCredentials, "Remember me not enabled");
             }
 
@@ -137,11 +136,11 @@ public class AuthenticationService : IAuthenticationService
 
             if (string.IsNullOrEmpty(lastUser) || string.IsNullOrEmpty(storedToken))
             {
-                _logger.LogDebug("Auto-authentication failed - missing stored credentials");
+                Log.Debug("Auto-authentication failed - missing stored credentials");
                 return AuthenticationResult.Failure(AuthenticationError.InvalidCredentials, "No stored credentials found");
             }
 
-            _logger.LogInformation("Attempting auto-authentication for user {Username}", lastUser);
+            Log.Information("Attempting auto-authentication for user {Username}", lastUser);
 
             // In a real application, you would validate the stored token with your backend
             // For now, we'll simulate a successful auto-authentication
@@ -171,18 +170,18 @@ public class AuthenticationService : IAuthenticationService
                 Reason = "Auto-authentication successful"
             });
 
-            _logger.LogInformation("Auto-authentication successful for user {Username}", lastUser);
+            Log.Information("Auto-authentication successful for user {Username}", lastUser);
             
             return AuthenticationResult.Success(user, token, expiresAt);
         }
         catch (OperationCanceledException)
         {
-            _logger.LogInformation("Auto-authentication cancelled");
+            Log.Information("Auto-authentication cancelled");
             return AuthenticationResult.Failure(AuthenticationError.UnknownError, "Operation was cancelled");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error during auto-authentication");
+            Log.Error(ex, "Error during auto-authentication");
             return AuthenticationResult.Failure(AuthenticationError.UnknownError, "An unexpected error occurred during auto-authentication");
         }
     }
@@ -193,7 +192,7 @@ public class AuthenticationService : IAuthenticationService
         {
             var username = _currentUser?.Username ?? "Unknown";
             
-            _logger.LogInformation("Signing out user {Username}", username);
+            Log.Information("Signing out user {Username}", username);
 
             // Clear current session
             _currentUser = null;
@@ -212,11 +211,11 @@ public class AuthenticationService : IAuthenticationService
                 Reason = "User signed out"
             });
 
-            _logger.LogInformation("User {Username} signed out successfully", username);
+            Log.Information("User {Username} signed out successfully", username);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error during sign out");
+            Log.Error(ex, "Error during sign out");
             throw;
         }
     }
@@ -230,7 +229,7 @@ public class AuthenticationService : IAuthenticationService
 
         try
         {
-            _logger.LogDebug("Refreshing token for user {Username}", _currentUser.Username);
+            Log.Debug("Refreshing token for user {Username}", _currentUser.Username);
 
             // Simulate token refresh
             await Task.Delay(200, cancellationToken);
@@ -241,18 +240,18 @@ public class AuthenticationService : IAuthenticationService
             _authToken = newToken;
             _tokenExpiresAt = expiresAt;
 
-            _logger.LogDebug("Token refreshed successfully for user {Username}", _currentUser.Username);
+            Log.Debug("Token refreshed successfully for user {Username}", _currentUser.Username);
             
             return AuthenticationResult.Success(_currentUser, newToken, expiresAt);
         }
         catch (OperationCanceledException)
         {
-            _logger.LogInformation("Token refresh cancelled for user {Username}", _currentUser?.Username);
+            Log.Information("Token refresh cancelled for user {Username}", _currentUser?.Username);
             return AuthenticationResult.Failure(AuthenticationError.UnknownError, "Operation was cancelled");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error refreshing token for user {Username}", _currentUser?.Username);
+            Log.Error(ex, "Error refreshing token for user {Username}", _currentUser?.Username);
             return AuthenticationResult.Failure(AuthenticationError.UnknownError, "Failed to refresh token");
         }
     }
@@ -266,7 +265,7 @@ public class AuthenticationService : IAuthenticationService
 
         if (_tokenExpiresAt.HasValue && _tokenExpiresAt.Value <= DateTime.UtcNow)
         {
-            _logger.LogInformation("Session expired for user {Username}", _currentUser.Username);
+            Log.Information("Session expired for user {Username}", _currentUser.Username);
             await SignOutAsync(cancellationToken);
             return false;
         }

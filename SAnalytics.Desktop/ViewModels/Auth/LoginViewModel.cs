@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Controls;
 using SAnalytics.Desktop.Core.ViewModels;
 using SAnalytics.Desktop.Services;
 using SAnalytics.Desktop.Views.Pages;
+using Serilog;
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -67,10 +68,9 @@ public partial class LoginViewModel : BaseViewModel
 
     public LoginViewModel(
         ILocalizationService localizationService,
-        ILogger<LoginViewModel> logger,
         IAuthenticationService authenticationService,
         INavigationService navigationService)
-        : base(localizationService, logger)
+        : base(localizationService)
     {
         _authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
         _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
@@ -153,7 +153,7 @@ public partial class LoginViewModel : BaseViewModel
 
                 if (result.IsSuccess && result.User != null)
                 {
-                    Logger.LogInformation("User {Username} logged in successfully", Username);
+                    Log.Information("User {Username} logged in successfully", Username);
                     
                     // Navigate to dashboard using navigation service
                     await _navigationService.NavigateToAsync<DashboardPage>();
@@ -162,7 +162,7 @@ public partial class LoginViewModel : BaseViewModel
                 {
                     var errorMessage = result.ErrorMessage ?? GetLocalizedString("LoginError_InvalidCredentials");
                     SetError(errorMessage);
-                    Logger.LogWarning("Login failed for user {Username}: {Error}", Username, errorMessage);
+                    Log.Warning("Login failed for user {Username}: {Error}", Username, errorMessage);
                 }
             }
             finally

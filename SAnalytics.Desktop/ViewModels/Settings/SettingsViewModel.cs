@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using SAnalytics.Desktop.Core.ViewModels;
 using SAnalytics.Desktop.Models.Data;
 using SAnalytics.Desktop.Services;
+using Serilog;
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -37,9 +38,8 @@ public partial class SettingsViewModel : BaseViewModel
     public ObservableCollection<Language> AvailableLanguages { get; }
 
     public SettingsViewModel(
-        ILocalizationService localizationService,
-        ILogger<SettingsViewModel> logger)
-        : base(localizationService, logger)
+        ILocalizationService localizationService)
+        : base(localizationService)
     {
         AvailableLanguages = new ObservableCollection<Language>(Language.SupportedLanguages);
         _selectedLanguage = Language.English; // Initialize with default first
@@ -81,7 +81,7 @@ public partial class SettingsViewModel : BaseViewModel
         if (value != null && value.Code != LocalizationService.CurrentCulture.Name)
         {
             LocalizationService.SetLanguage(value.Code);
-            Logger.LogInformation("Language changed to {Language}", value.Name);
+            Log.Information("Language changed to {Language}", value.Name);
         }
     }
 }

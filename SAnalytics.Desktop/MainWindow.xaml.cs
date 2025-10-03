@@ -3,35 +3,22 @@ using Microsoft.UI.Xaml;
 using SAnalytics.Desktop.Services;
 using SAnalytics.Desktop.Views.Pages;
 
-namespace SAnalytics.Desktop
+namespace SAnalytics.Desktop;
+
+public sealed partial class MainWindow : Window
 {
-    public sealed partial class MainWindow : Window
+    private readonly INavigationService _navigationService;
+
+    public MainWindow()
     {
-        private readonly INavigationService _navigationService;
+        InitializeComponent();
 
-        public MainWindow()
-        {
-            InitializeComponent();
-            ExtendsContentIntoTitleBar = true;
-            SetTitleBar(null);
-            
-            // Get navigation service and configure it
-            var app = (App)Application.Current;
-            _navigationService = app.Services.GetRequiredService<INavigationService>();
-            _navigationService.SetFrame(ContentFrame);
-            
-            // Navigate to login page
-            _ = _navigationService.NavigateToAsync<LoginPage>();
-        }
-
-        public async void NavigateToDashboard()
-        {
-            await _navigationService.NavigateToAsync<DashboardPage>();
-        }
-
-        public async void NavigateToLogin()
-        {
-            await _navigationService.NavigateToAsync<LoginPage>();
-        }
+        ExtendsContentIntoTitleBar = true;
+        
+        var app = (App)Application.Current;
+        _navigationService = app.Services.GetRequiredService<INavigationService>();
+        _navigationService.SetFrame(ContentFrame);
+        
+        _ = _navigationService.NavigateToAsync<LoginPage>();
     }
 }
