@@ -46,10 +46,10 @@ dotnet publish SAnalytics.Desktop/SAnalytics.Desktop.csproj --configuration Rele
 ### Application Structure
 The application follows a sophisticated MVVM pattern with proper dependency injection and service-oriented architecture:
 
-- **Application Host**: Uses Microsoft.Extensions.Hosting with comprehensive service registration in `App.xaml.cs:39-60`
+- **Application Host**: Uses Microsoft.Extensions.Hosting with comprehensive service registration in `App.xaml.cs:56-64`
 - **Navigation**: MainWindow initializes with LoginPage and uses INavigationService for page navigation
-- **Exception Handling**: Global WinUI3ExceptionHandler initialized at startup with structured logging
-- **Service Lifecycle**: Core services (Theme, Configuration, Authentication) initialized asynchronously during startup
+- **Exception Handling**: UnhandledException event handler in `App.xaml.cs:28-32` logs fatal errors via Serilog
+- **Service Lifecycle**: Core services (Theme, Configuration, Authentication) initialized asynchronously in `App.xaml.cs:66-97`
 
 ### Project Structure
 - **Core/**: Infrastructure components
@@ -72,9 +72,10 @@ The application follows a sophisticated MVVM pattern with proper dependency inje
 - **Models/Data/**: Data models (placeholder structure)
 
 ### Key Technologies
-- **WinUI 3**: Modern Windows UI framework with WindowsAppSDK 1.7.250606001
+- **WinUI 3**: Modern Windows UI framework with WindowsAppSDK 1.8.250916003
 - **CommunityToolkit.Mvvm**: MVVM framework with source generators for ObservableProperty and RelayCommand
 - **Microsoft.Extensions.Hosting**: Full hosting model with DI, logging, and configuration
+- **Serilog**: Structured logging with console and debug sinks, configured in `App.xaml.cs:121-127`
 - **MSIX Packaging**: Modern Windows app packaging with multi-architecture support
 
 ### Dependency Injection Architecture
@@ -114,9 +115,16 @@ The project includes GitHub Actions workflows for automated building and deploym
 
 ## Development Notes
 
-- **Application Entry**: Starts with MainWindow which navigates to LoginPage (`MainWindow.xaml.cs:24`)
-- **Authentication**: Placeholder authentication system with hardcoded credentials (admin/admin)
+- **Application Entry**: Starts with MainWindow which navigates to LoginPage
+- **Authentication**: Placeholder authentication system with auto-login attempt on startup
 - **Platform Support**: Multi-architecture support (x86, x64, ARM64) with dedicated publish profiles
 - **MSIX Packaging**: Enabled for Windows Store distribution with proper manifest configuration
-- **Logging**: Structured logging with different levels for Debug vs Release builds
-- **Error Handling**: Comprehensive exception handling with user-friendly dialogs for development scenarios
+- **Logging**: Serilog configured with Debug minimum level, outputs to Debug and Console sinks
+- **Publish Settings**: ReadyToRun and Trimming disabled for WinUI 3 compatibility (see `SAnalytics.Desktop.csproj:60-63`)
+
+## Important Instructions
+
+Do what has been asked; nothing more, nothing less.
+NEVER create files unless they're absolutely necessary for achieving your goal.
+ALWAYS prefer editing an existing file to creating a new one.
+NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
